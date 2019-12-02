@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Service
 public class AdultService {
@@ -25,7 +25,7 @@ public class AdultService {
         adult.setAdult_suggested_toys_list("");
         adultRepository.save(adult);
     }
-    public void deleteAdult(String adultId){ adultRepository.deleteById(adultId);}
+    public void deleteAdult(String adultId){ adultRepository.deleteById(Long.parseLong(adultId));}
 
     public List<Adult> getAddAdults(){
         List<Adult> result = new ArrayList<>();

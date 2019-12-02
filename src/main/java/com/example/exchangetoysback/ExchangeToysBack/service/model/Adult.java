@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,6 +31,8 @@ public class Adult {
     private String adult_email_address;
     @Length(max = 500)
     private String adult_suggested_toys_list;
+//    @OneToMany( targetEntity=Adult.class )
+//    private List employee_list;
 
 
 }
