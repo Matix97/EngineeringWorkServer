@@ -42,7 +42,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
-
+ //dla tego jednogo sztywno zrobionego tokenu działa
+//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6InVzZXIiLCJleHAiOjE1NDgyNDI1ODksInJvbCI6WyJST0xFX1VTRVIiXX0.GzUPUWStRofrWI9Ctfv2h-XofGZwcOog9swtuqg1vSkA8kDWLcY3InVgmct7rq4ZU3lxI6CGupNgSazypHoFOA
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         var token = request.getHeader(SecurityConstants.TOKEN_HEADER);
         if (!token.isEmpty()&&token!=null && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
