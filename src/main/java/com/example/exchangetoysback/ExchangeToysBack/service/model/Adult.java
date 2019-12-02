@@ -1,17 +1,18 @@
 package com.example.exchangetoysback.ExchangeToysBack.service.model;
 
-import com.sun.istack.NotNull;
+
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
 @Table(name = "adult")
 public class Adult {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adult_id;
     @NotNull
     @Length(max = 50)
