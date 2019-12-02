@@ -28,9 +28,10 @@ public class ChildService {
 
     public void deleteChild(String childId){ childRepository.deleteById(Long.parseLong(childId));}
 
-    public List<Child> getAddChildren(){
+    public List<Child> getAllChildren(){
         List<Child> result = new ArrayList<>();
         childRepository.findAll().forEach(result::add);
         return result;
     }
+
 }

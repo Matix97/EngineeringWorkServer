@@ -16,12 +16,12 @@ public class ChildController {
     private ChildService childService;
 
     @GetMapping
-    public List<Child> getAdults(){ return childService.getAddChildren();}
+    public List<Child> getChildren(){ return childService.getAllChildren();}
 
-    @PostMapping()
-    public void createAdult(@RequestBody ChildDTO childDTO){childService.saveChild(childDTO);}
+    @PostMapping()  //todo child login must be combination of adult_id/email and child name
+    public void createChild(@RequestBody ChildDTO childDTO){childService.saveChild(childDTO);}
 
     @DeleteMapping()
-    public void deleteAdult(@RequestParam String adultId){childService.deleteChild(adultId);}
+    public void deleteChild(@RequestParam String adultId){childService.deleteChild(adultId);}
 
 }

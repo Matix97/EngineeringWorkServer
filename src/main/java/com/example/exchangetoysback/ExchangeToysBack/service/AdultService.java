@@ -15,6 +15,7 @@ public class AdultService {
     @Autowired
     private AdultRepository adultRepository;
 
+
     public void saveAdult(AdultDTO adultDTO){
         Adult adult = new Adult();
         adult.setAdult_name(adultDTO.getAdult_name());
@@ -27,7 +28,7 @@ public class AdultService {
     }
     public void deleteAdult(String adultId){ adultRepository.deleteById(Long.parseLong(adultId));}
 
-    public List<Adult> getAddAdults(){
+    public List<Adult> getAllAdults(){
         List<Adult> result = new ArrayList<>();
         adultRepository.findAll().forEach(result::add);
         return result;

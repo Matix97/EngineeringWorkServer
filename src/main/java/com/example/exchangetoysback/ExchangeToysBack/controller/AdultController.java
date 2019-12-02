@@ -15,8 +15,9 @@ public class AdultController {
     private AdultService adultService;
 
     @GetMapping
-    public List<Adult> getAdults(){ return adultService.getAddAdults();}
+    public List<Adult> getAdults(){ return adultService.getAllAdults();}
 
+    //todo add checking if emailAddress is unique
     @PostMapping()
     public void createAdult(@RequestBody AdultDTO adultDTO){adultService.saveAdult(adultDTO);}
 
