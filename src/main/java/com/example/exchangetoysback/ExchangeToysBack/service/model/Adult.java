@@ -35,4 +35,59 @@ public class Adult {
 //    private List employee_list;
 
 
+    public Long getAdult_id() {
+        return adult_id;
+    }
+
+    public void setAdult_id(Long adult_id) {
+        this.adult_id = adult_id;
+    }
+
+    public String getAdult_name() {
+        return adult_name;
+    }
+
+    public void setAdult_name(String adult_name) {
+        this.adult_name = adult_name;
+    }
+
+    public String getAdult_surname() {
+        return adult_surname;
+    }
+
+    public void setAdult_surname(String adult_surname) {
+        this.adult_surname = adult_surname;
+    }
+
+    public String getAdult_password() {
+        return adult_password;
+    }
+
+    public void setAdult_password(String adult_password) {
+        this.adult_password = adult_password;
+    }
+
+    public String getAdult_phone_number() {
+        return adult_phone_number;
+    }
+
+    public void setAdult_phone_number(String adult_phone_number) {
+        this.adult_phone_number = adult_phone_number;
+    }
+
+    public String getAdult_email_address() {
+        return adult_email_address;
+    }
+
+    public void setAdult_email_address(String adult_email_address) {
+        this.adult_email_address = adult_email_address;
+    }
+
+    public String getAdult_suggested_toys_list() {
+        return adult_suggested_toys_list;
+    }
+
+    public void setAdult_suggested_toys_list(String adult_suggested_toys_list) {
+        this.adult_suggested_toys_list = adult_suggested_toys_list;
+    }
 }

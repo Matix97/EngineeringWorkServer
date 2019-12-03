@@ -1,4 +1,6 @@
 package com.example.exchangetoysback.ExchangeToysBack.configuration;
+import com.example.exchangetoysback.ExchangeToysBack.security.JwtAuthenticationEntryPoint;
+import com.example.exchangetoysback.ExchangeToysBack.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
