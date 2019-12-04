@@ -22,7 +22,7 @@ public class Adult {
     @Length(max = 50)
     private String adult_surname;
     @NotNull
-    @Length(max = 50)
+    @Length(max = 500)
     private String adult_password;
     @Length(max = 12)
     private String adult_phone_number;
@@ -89,5 +89,18 @@ public class Adult {
 
     public void setAdult_suggested_toys_list(String adult_suggested_toys_list) {
         this.adult_suggested_toys_list = adult_suggested_toys_list;
+    }
+
+    @Override
+    public String toString() {
+        return "Adult{" +
+                "adult_id=" + adult_id +
+                ", adult_name='" + adult_name + '\'' +
+                ", adult_surname='" + adult_surname + '\'' +
+                ", adult_password='" + adult_password + '\'' +
+                ", adult_phone_number='" + adult_phone_number + '\'' +
+                ", adult_email_address='" + adult_email_address + '\'' +
+                ", adult_suggested_toys_list='" + adult_suggested_toys_list + '\'' +
+                '}';
     }
 }

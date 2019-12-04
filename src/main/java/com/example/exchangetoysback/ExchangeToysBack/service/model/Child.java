@@ -19,7 +19,7 @@ public class Child {
     @Length(max = 50)
     private String child_name;
     @NotNull
-    @Length(max = 50)
+    @Length(max = 500)
     private String child_password;
     private int child_radius_area;
     private double child_latitude;

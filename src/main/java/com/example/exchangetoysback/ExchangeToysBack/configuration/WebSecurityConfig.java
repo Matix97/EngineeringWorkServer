@@ -1,6 +1,8 @@
 package com.example.exchangetoysback.ExchangeToysBack.configuration;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtAuthenticationEntryPoint;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtRequestFilter;
+import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
+import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+//    @Autowired
+//    private ChildService childService;
     @Autowired
-    private UserDetailsService jwtUserDetailsService;
+    private AdultService adultService;
+//    @Autowired
+//    private UserDetailsService jwtUserDetailsService;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -35,7 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+     //  auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        //auth.userDetailsService(childService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(adultService).passwordEncoder(passwordEncoder());
     }
 
     @Bean

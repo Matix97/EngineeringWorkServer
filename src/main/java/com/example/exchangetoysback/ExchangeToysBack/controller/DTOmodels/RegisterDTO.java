@@ -1,6 +1,6 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels;
 
-public class UserDTO {
+public class RegisterDTO {
     private String username;
     private String password;
 

@@ -1,7 +1,7 @@
 package com.example.exchangetoysback.ExchangeToysBack.service;
 import java.util.ArrayList;
 
-import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.UserDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RegisterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.UserDao;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public void save(UserDTO user) {
+    public void save(RegisterDTO user) {
         DAOUser newUser = new DAOUser();
         newUser.setUsername(user.getUsername());
         newUser.setPass(bcryptEncoder.encode(user.getPassword()));
