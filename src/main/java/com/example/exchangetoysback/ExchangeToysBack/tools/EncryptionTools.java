@@ -25,6 +25,7 @@ public class EncryptionTools {
      * @throws InvalidKeyException
      */
     public static byte[] encrypt(String data) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
+        data=replenishToMultipleOf16(data);
         Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte encrypted[] = cipher.doFinal(data.getBytes());
@@ -46,5 +47,16 @@ public class EncryptionTools {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte decrypted[] = cipher.doFinal(encrypted);
         return new String(decrypted);
+    }
+    private static String replenishToMultipleOf16(String s)
+    {
+        if ((s.length() % 16) != 0) {
+            int howManySignsIsLacking = 16- s.length() % 16;
+            System.out.println("howManySignsIsLacking: "+howManySignsIsLacking);
+            for (int i = 0; i < howManySignsIsLacking; i++) {
+                s += ";";
+            }
+        }
+        return s;
     }
 }

@@ -33,6 +33,8 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader(value="Authorization") byte[] message) throws Exception {
+        System.out.println("message: "+message);
+        System.out.println("String(message): "+new String(message));
         String [] s= EncryptionTools.decrypt(message).split(";");
         String username=s[0];
         String password=s[1];
