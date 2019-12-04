@@ -45,11 +45,8 @@ public class ChildService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Child user = null;
-
-        System.out.println("Kurwa 1");
-        //check if is in database and have correct credential
+        //check if is in database
         for (Child ch : getAllChildren()) {
-            System.out.println("Kurwa 2");
             if (ch.getChild_name().equals(username)) {
                 System.out.println(ch.toString());
                 user = ch;
@@ -57,7 +54,7 @@ public class ChildService implements UserDetailsService {
             }
         }
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            return null;
         }
         return new org.springframework.security.core.userdetails.User(user.getChild_name(), user.getChild_password(),
                 new ArrayList<>());

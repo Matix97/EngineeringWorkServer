@@ -26,10 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-//    @Autowired
-//    private ChildService childService;
-//    @Autowired
-//    private AdultService adultService;
     @Autowired
     private UserDetailsService jwtUserDetailsService;
 
@@ -42,8 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // user for matching credentials
         // Use BCryptPasswordEncoder
        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-        //auth.userDetailsService(childService).passwordEncoder(passwordEncoder());
-        //auth.userDetailsService(adultService).passwordEncoder(passwordEncoder());
+
     }
 
     @Bean

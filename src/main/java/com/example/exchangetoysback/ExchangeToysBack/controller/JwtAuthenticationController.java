@@ -46,65 +46,18 @@ public class JwtAuthenticationController {
         String role = s[2];
         if (username == null || password == null || role == null)
             return null;//a niech się wali jak daje złe dane
-        System.out.println("Authenticate\n"+username + "\n" + password + "\n" + role);
+        System.out.println("Authenticate\n" + username + "\t" + password + "\t" + role);
+        authenticate(username, password);
 
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 
-        //   Adult loggingAdult =null;
-        //  Child loggingChild =null;
-        if (role.equals("child")) {
-//            //check if is in database and have correct credential
-//            for (Child ch: childService.getAllChildren()) {
-//                if(ch.getChild_name().equals(username)){
-//                    loggingChild=ch;
-//                    break;
-//                }
-//            }
-//            if(loggingChild!=null)
-//            {
-//                //check password
-//                if(loggingChild.getChild_password().equals(password))
-//                {
-//                    //generate token
-//                }
-//                else
-//                {
-//                    //todo invalid password
-//                }
-//            }
-            authenticate(username, password);
+        final String token = jwtTokenUtil.generateToken(userDetails);
 
-            final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+        return ResponseEntity.ok(new JwtResponse(token));
 
-            final String token = jwtTokenUtil.generateToken(userDetails);
-
-            return ResponseEntity.ok(new JwtResponse(token));
-
-
-        } else if (role.equals("adult")) {
-            System.out.println("***********************************so adult\t"+username+"\t"+password);
-            authenticate(username, password);
-
-            final UserDetails userDetails = adultService.loadUserByUsername(username);
-
-            final String token = jwtTokenUtil.generateToken(userDetails);
-
-            return ResponseEntity.ok(new JwtResponse(token));
-
-
-        } else {
-            authenticate(username, password);
-
-            final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
-
-            final String token = jwtTokenUtil.generateToken(userDetails);
-
-            return ResponseEntity.ok(new JwtResponse(token));
-
-
-        }
 
     }
-boolean flagaTakBrzydkaZeAzStarch=false;
+//todo dojdzie więcej parametrów jak po stronie andorida sdię doda
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
         System.out.println("hg");
@@ -114,28 +67,24 @@ boolean flagaTakBrzydkaZeAzStarch=false;
         if (username == null || password == null) {
             return null;//a niech się wali jak daje złe dane
         }
-        UserDetails userDetails=null;
-        try{
-             userDetails= adultService.loadUserByUsername(username);
-        }catch(UsernameNotFoundException e){
-            flagaTakBrzydkaZeAzStarch=true;
-        }
+        UserDetails userDetails = adultService.loadUserByUsername(username);
+        userDetails = childService.loadUserByUsername(username);
 
-        if(flagaTakBrzydkaZeAzStarch){
-        AdultDTO user = new AdultDTO();
-        user.setAdult_name("");
-        user.setAdult_surname("");
-        user.setAdult_password(password);
-        user.setAdult_phone_number("");
-        user.setAdult_email_address(username);
-        adultService.saveAdult(user);
-        // return ResponseEntity.ok(jwtUserDetailsService.save(user));
-        return ResponseEntity.ok("ok");}
-        else
+
+        if (userDetails == null) {
+            AdultDTO user = new AdultDTO();
+            user.setAdult_name("");
+            user.setAdult_surname("");
+            user.setAdult_password(password);
+            user.setAdult_phone_number("");
+            user.setAdult_email_address(username);
+            adultService.saveAdult(user);
+            return ResponseEntity.ok("ok");
+        } else
             return ResponseEntity.ok("user exist");
 
 
-}
+    }
 
     private void authenticate(String username, String password) throws Exception {
         try {

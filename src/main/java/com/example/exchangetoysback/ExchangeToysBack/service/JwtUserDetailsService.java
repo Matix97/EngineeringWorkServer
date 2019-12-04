@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RegisterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.UserDao;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,11 +29,14 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        DAOUser user = userDao.findByUsername(username);
-        if (user == null) {
+
+        UserDetails user =adultService.loadUserByUsername(username);
+        if(user==null)
+            user =childService.loadUserByUsername(username);
+        if (user == null ) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPass(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 new ArrayList<>());
     }
 

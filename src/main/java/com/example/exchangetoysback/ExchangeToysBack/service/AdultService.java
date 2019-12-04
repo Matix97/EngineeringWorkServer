@@ -45,22 +45,18 @@ public class AdultService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)  {
+    public UserDetails loadUserByUsername(String email)  throws UsernameNotFoundException{
         Adult user = null;
-
-        System.out.println("Kurwa 1");
         //check if is in database and have correct credential
         for (Adult ch : getAllAdults()) {
-            System.out.println("Kurwa 2");
             if (ch.getAdult_email_address().equals(email)) {
                 System.out.println(ch.toString());
                 user = ch;
                 break;
             }
         }
-
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + email);
+            return null;
         }
         return new org.springframework.security.core.userdetails.User(user.getAdult_email_address(), user.getAdult_password(),
                 new ArrayList<>());
