@@ -11,11 +11,10 @@ public class DAOUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column
+    //@Column(name = "username")
     private String username;
-    @Column
-    @JsonIgnore
-    private String password;
+    //@Column(name = "pass")
+    private String pass;
 
     public String getUsername() {
         return username;
@@ -25,12 +24,12 @@ public class DAOUser {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String password) {
+        this.pass = password;
     }
 
 }

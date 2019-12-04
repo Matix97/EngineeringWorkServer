@@ -5,7 +5,6 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.UserDT
 import com.example.exchangetoysback.ExchangeToysBack.repository.UserDao;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,14 +28,14 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPass(),
                 new ArrayList<>());
     }
 
     public void save(UserDTO user) {
         DAOUser newUser = new DAOUser();
         newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+        newUser.setPass(bcryptEncoder.encode(user.getPassword()));
         userDao.save(newUser);
     }
 }

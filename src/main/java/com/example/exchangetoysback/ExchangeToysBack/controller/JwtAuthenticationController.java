@@ -6,6 +6,7 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.JwtRes
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.UserDTO;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,10 +47,11 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+    public ResponseEntity<String> saveUser(@RequestBody UserDTO user) throws Exception {
+        System.out.println("strart");
         jwtUserDetailsService.save(user);
        // return ResponseEntity.ok(jwtUserDetailsService.save(user));
-        return null;
+        return ResponseEntity.ok("ok");
     }
 
     private void authenticate(String username, String password) throws Exception {
