@@ -2,24 +2,32 @@ package com.example.exchangetoysback.ExchangeToysBack.service;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ChildService {
+public class ChildService implements UserDetailsService {
 
     @Autowired
     private ChildRepository childRepository;
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
 
     public void saveChild(ChildDTO childDTO){
         Child child =new Child();
         child.setChild_name(childDTO.getChild_name());
         child.setChild_parent_id(childDTO.getChild_parent_id());
-        child.setChild_password(childDTO.getChild_password());
+        child.setChild_password(bcryptEncoder.encode(childDTO.getChild_password()));
         child.setChild_radius_area(childDTO.getChild_radius_area());
         child.setChild_latitude(childDTO.getChild_latitude());
         child.setChild_longitude(childDTO.getChild_longitude());
@@ -32,6 +40,27 @@ public class ChildService {
         List<Child> result = new ArrayList<>();
         childRepository.findAll().forEach(result::add);
         return result;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Child user = null;
+
+        System.out.println("Kurwa 1");
+        //check if is in database and have correct credential
+        for (Child ch : getAllChildren()) {
+            System.out.println("Kurwa 2");
+            if (ch.getChild_name().equals(username)) {
+                System.out.println(ch.toString());
+                user = ch;
+                break;
+            }
+        }
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return new org.springframework.security.core.userdetails.User(user.getChild_name(), user.getChild_password(),
+                new ArrayList<>());
     }
 
 }

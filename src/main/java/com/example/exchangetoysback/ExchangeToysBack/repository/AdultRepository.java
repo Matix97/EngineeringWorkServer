@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdultRepository extends CrudRepository<Adult,Long> {
-
 }
