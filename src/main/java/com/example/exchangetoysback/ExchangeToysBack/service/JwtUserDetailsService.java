@@ -17,6 +17,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private AdultService adultService;
+    @Autowired
+    private ChildService childService;
 
     @Autowired
     private PasswordEncoder bcryptEncoder;

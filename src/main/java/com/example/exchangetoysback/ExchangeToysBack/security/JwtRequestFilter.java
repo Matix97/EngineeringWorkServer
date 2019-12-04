@@ -19,12 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.ExpiredJwtException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    @Autowired
-    private AdultService adultService;
+//    @Autowired
+//    private AdultService adultService;
 //    @Autowired
 //    private ChildService childService;
-//    @Autowired
-//    private JwtUserDetailsService jwtUserDetailsService;
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Override
@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.adultService.loadUserByUsername(username);
+            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 //            if(userDetails ==null)
 //                 userDetails = this.childService.loadUserByUsername(username);
 

@@ -18,6 +18,7 @@ import java.util.List;
 public class AdultService implements UserDetailsService {
     @Autowired
     private AdultRepository adultRepository;
+
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
