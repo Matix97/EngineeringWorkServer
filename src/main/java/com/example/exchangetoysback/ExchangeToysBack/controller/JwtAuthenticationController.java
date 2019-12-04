@@ -7,6 +7,7 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.UserDT
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
+import com.example.exchangetoysback.ExchangeToysBack.tools.EncryptionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +32,13 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService jwtUserDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestHeader(value="username") String username,@RequestHeader(value = "password") String password,@RequestHeader(value = "role")  String role) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestHeader(value="Authorization") byte[] message) throws Exception {
+        String [] s= EncryptionTools.decrypt(message).split(";");
+        String username=s[0];
+        String password=s[1];
+        String role=s[2];
+        if(username==null || password==null || role==null)
+            return null;//a niech się wali jak daje złe dane
         System.out.println(username+"\n"+password+"\n"+role);
 
         authenticate(username, password);
