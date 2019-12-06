@@ -19,6 +19,18 @@ public class Child {
     @Length(max = 50)
     private String child_name;
     @NotNull
+    @Length(max = 50)
+    private String child_login;
+
+    public String getChild_login() {
+        return child_login;
+    }
+
+    public void setChild_login(String child_login) {
+        this.child_login = child_login;
+    }
+
+    @NotNull
     @Length(max = 500)
     private String child_password;
     private int child_radius_area;

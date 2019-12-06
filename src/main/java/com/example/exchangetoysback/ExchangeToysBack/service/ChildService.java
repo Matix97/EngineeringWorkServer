@@ -31,6 +31,7 @@ public class ChildService implements UserDetailsService {
         child.setChild_radius_area(childDTO.getChild_radius_area());
         child.setChild_latitude(childDTO.getChild_latitude());
         child.setChild_longitude(childDTO.getChild_longitude());
+        child.setChild_login(childDTO.getChild_login());
         childRepository.save(child);
     }
 

@@ -6,6 +6,16 @@ import lombok.Data;
 public class ChildDTO {
     private Long child_parent_id;
     private String child_name;
+    private String child_login;
+
+    public String getChild_login() {
+        return child_login;
+    }
+
+    public void setChild_login(String child_login) {
+        this.child_login = child_login;
+    }
+
     private String child_password;
     private int child_radius_area;
     private double child_latitude;
