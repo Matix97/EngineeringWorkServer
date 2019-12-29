@@ -1,12 +1,14 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller;
 
-import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ToyDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RegisterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+//import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 
 @RestController
 @RequestMapping(value = "toy")
@@ -16,8 +18,19 @@ public class ToyController {
     private ToyService toyService;
 
     @GetMapping
-    public List<Toy> getToys(){return toyService.getToys();}
+    public List<Toy> getToys() {
+        return toyService.getToys();
+    }
 
     @PostMapping()
-    public void createToy(@RequestBody ToyDTO toyDTO){toyService.createToy(toyDTO);}
+    public void createToy(@RequestHeader(name = "Authorization") String token, @RequestBody RegisterDTO toyDTO) {//@RequestBody AddToyDTO toyDTO,
+        System.out.println("token: " + token);
+        // System.out.println("username from token: "+new TokenInfo().getUsernameFromToken(token));
+        // toyService.createToy(toyDTO);
+    }
+
+    @PostMapping(value = "getToys")
+    public String getFilterToy() {
+        return "getToys";
+    }
 }

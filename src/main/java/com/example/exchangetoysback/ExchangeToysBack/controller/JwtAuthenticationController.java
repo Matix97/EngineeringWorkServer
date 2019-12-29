@@ -3,7 +3,6 @@ package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AdultDTO;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.JwtResponse;
-import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RegisterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
@@ -16,7 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -52,7 +50,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
+        System.out.println("Token: " + token);
         return ResponseEntity.ok(new JwtResponse(token));
 
 

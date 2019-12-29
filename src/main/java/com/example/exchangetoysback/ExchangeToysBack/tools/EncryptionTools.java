@@ -1,13 +1,12 @@
 package com.example.exchangetoysback.ExchangeToysBack.tools;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class EncryptionTools {
 
@@ -33,8 +32,7 @@ public class EncryptionTools {
     }
 
     /**
-     *
-     * @param encrypted array od bytes do decrypt
+     * @param encrypted array bytes to decrypt
      * @return String message with decrypted message
      * @throws NoSuchPaddingException
      * @throws NoSuchAlgorithmException
