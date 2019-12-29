@@ -55,7 +55,8 @@ public class JwtAuthenticationController {
 
 
     }
-//todo dojdzie więcej parametrów jak po stronie andorida sdię doda
+
+    //todo dojdzie więcej parametrów jak po stronie andorida sdię doda
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
         System.out.println("hg");

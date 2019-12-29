@@ -3,6 +3,7 @@ package com.example.exchangetoysback.ExchangeToysBack.controller;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RegisterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
+import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ToyController {
     @PostMapping()
     public void createToy(@RequestHeader(name = "Authorization") String token, @RequestBody RegisterDTO toyDTO) {//@RequestBody AddToyDTO toyDTO,
         System.out.println("token: " + token);
-        // System.out.println("username from token: "+new TokenInfo().getUsernameFromToken(token));
+        System.out.println("username from token: " + TokenInfo.getInstance().getUserName());
         // toyService.createToy(toyDTO);
     }
 
