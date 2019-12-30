@@ -9,6 +9,7 @@ import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
 import com.example.exchangetoysback.ExchangeToysBack.tools.EncryptionTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -36,7 +37,7 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService jwtUserDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
 
         String[] s = EncryptionTools.decrypt(message).split(";");
         String email = s[0];
@@ -51,7 +52,8 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println("Token: " + token);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new JwtResponse(token));
 
 
     }
