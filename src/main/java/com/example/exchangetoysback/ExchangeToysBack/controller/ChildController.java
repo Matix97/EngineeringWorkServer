@@ -27,16 +27,16 @@ public class ChildController {
         return childService.getAllChildren();
     }
 
-    @PostMapping()  //todo child login must be combination of adult_id/email and child name
+    @PostMapping()
     public ResponseEntity<?> createChild(@RequestBody String message) {
         //test
-        System.out.println("childController: " + TokenInfo.getInstance().getUserName() + "given string: " + message.substring(1, message.length() - 1));
+        //System.out.println("childController: " + TokenInfo.getInstance().getUserName() + "given string: " + message.substring(1, message.length() - 1));
 
 
         String[] s = message.substring(1, message.length() - 1).split(";");
-        for (String s1 : s) {
-            System.out.println(s1);
-        }
+//        for (String s1 : s) {
+//            System.out.println(s1);
+//        }
 
         String name = s[0];
         String login = s[1];
@@ -60,12 +60,12 @@ public class ChildController {
                 childDTO.setChild_radius_area(Integer.parseInt(radius));
                 childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
                 childService.saveChild(childDTO);
-                System.out.println("RETURN 1");
+                //  System.out.println("RETURN 1");
                 return ResponseEntity.ok(childDTO);
 
             } else {
                 //return message that given login is engaged
-                System.out.println("RETURN 2");
+                //   System.out.println("RETURN 2");
                 return new ResponseEntity("given login is busy", HttpStatus.BAD_REQUEST);//one more time stupid, but it will be work fine
             }
 
