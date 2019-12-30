@@ -7,6 +7,7 @@ import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
+import com.example.exchangetoysback.ExchangeToysBack.tools.EncryptionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +37,9 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService jwtUserDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") String message) throws Exception {
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
         System.out.println("Auth: " + message);
-        String[] s = message.split(";");
+        String[] s = EncryptionTools.decrypt(message).split(";");
         String email = s[0];
         String password = s[1];
         String role = s[2];
@@ -47,7 +48,7 @@ public class JwtAuthenticationController {
         System.out.println("Authenticate\n" + email + "\t" + password + "\t" + role);
         authenticate(email, password);
 
-        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email, role);
         System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println("Token: " + token);
@@ -59,8 +60,8 @@ public class JwtAuthenticationController {
 
     //todo dojdzie więcej parametrów jak po stronie andorida sdię doda
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") String message) throws Exception {
-        String[] s = message.split(";");
+    public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
+        String[] s = EncryptionTools.decrypt(message).split(";");
         String name = s[0];
         String surname = s[1];
         String password = s[2];
