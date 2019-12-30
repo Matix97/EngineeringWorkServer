@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ToyDTO {
+    private Long toy_id;
     private Long toy_owner_id;//foreign key to adult
     private Long toy_current_holder_id;
     private String toy_name;
@@ -17,6 +18,4 @@ public class ToyDTO {
     private String toy_factory_name;
     private int toy_quality_of_made;
     private String toy_photos;
-
-
 }

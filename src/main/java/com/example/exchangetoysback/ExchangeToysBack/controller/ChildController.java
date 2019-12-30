@@ -59,6 +59,7 @@ public class ChildController {
                 childDTO.setChild_age(Integer.parseInt(childAge));
                 childDTO.setChild_radius_area(Integer.parseInt(radius));
                 childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
+                System.out.println("Before create child: " + childDTO.toString());
                 childService.saveChild(childDTO);
                 //  System.out.println("RETURN 1");
                 return ResponseEntity.ok(childDTO);

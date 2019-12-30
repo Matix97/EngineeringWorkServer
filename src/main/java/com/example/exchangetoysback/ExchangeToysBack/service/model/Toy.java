@@ -15,8 +15,8 @@ public class Toy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long toy_id;
     @NotNull
-    private Long toy_owner_id;//foreign key to adult
-    private Long toy_current_holder_id;
+    private String toy_owner_id;//foreign key to adult
+    private String toy_current_holder_id;
     @NotNull
     @Length(max = 50)
     private String toy_name;
@@ -30,8 +30,8 @@ public class Toy {
     private String toy_special_feature;
     @Length(max = 200)
     private String toy_tags;
-    private int toy_didactic;
-    private int toy_vintage;
+    private int toy_didactic;//0 no, 1 yes
+    private int toy_vintage;//0 no, 1 yes
     @Length(max = 50)
     private String toy_factory_name;
     private int toy_quality_of_made;
