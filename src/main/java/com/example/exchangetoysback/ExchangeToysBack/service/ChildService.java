@@ -2,9 +2,7 @@ package com.example.exchangetoysback.ExchangeToysBack.service;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
-import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
-import com.example.exchangetoysback.ExchangeToysBack.service.model.DAOUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,6 +30,7 @@ public class ChildService implements UserDetailsService {
         child.setChild_latitude(childDTO.getChild_latitude());
         child.setChild_longitude(childDTO.getChild_longitude());
         child.setChild_login(childDTO.getChild_login());
+        child.setChild_age(childDTO.getChild_age());
         childRepository.save(child);
     }
 

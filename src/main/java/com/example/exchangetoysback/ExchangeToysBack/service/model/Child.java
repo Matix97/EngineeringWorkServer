@@ -14,7 +14,7 @@ public class Child {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long child_id;
     @NotNull
-    private Long child_parent_id;
+    private String child_parent_id;//generally it's parent's email
     @NotNull
     @Length(max = 50)
     private String child_name;
@@ -24,6 +24,8 @@ public class Child {
     @NotNull
     @Length(max = 500)
     private String child_password;
+    @NotNull
+    private int child_age;
     private int child_radius_area;
     private double child_latitude;
     private double child_longitude;
