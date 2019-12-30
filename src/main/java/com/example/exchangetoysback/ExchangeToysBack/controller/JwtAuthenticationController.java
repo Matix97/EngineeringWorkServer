@@ -39,15 +39,15 @@ public class JwtAuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
 
         String[] s = EncryptionTools.decrypt(message).split(";");
-        String username = s[0];
+        String email = s[0];
         String password = s[1];
         String role = s[2];
-        if (username == null || password == null || role == null)
+        if (email == null || password == null || role == null)
             return null;//a niech się wali jak daje złe dane
-        System.out.println("Authenticate\n" + username + "\t" + password + "\t" + role);
-        authenticate(username, password);
+        System.out.println("Authenticate\n" + email + "\t" + password + "\t" + role);
+        authenticate(email, password);
 
-        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
 
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println("Token: " + token);
@@ -59,24 +59,26 @@ public class JwtAuthenticationController {
     //todo dojdzie więcej parametrów jak po stronie andorida sdię doda
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
-        System.out.println("hg");
         String[] s = EncryptionTools.decrypt(message).split(";");
-        String username = s[0];
-        String password = s[1];
-        if (username == null || password == null) {
+        String name = s[0];
+        String surname = s[1];
+        String password = s[2];
+        String phoneNumber = s[3];
+        String email = s[4];
+        if (name == null || password == null || surname == null || email == null) {
             return null;//a niech się wali jak daje złe dane
         }
-        UserDetails userDetails = adultService.loadUserByUsername(username);
-        userDetails = childService.loadUserByUsername(username);
+        UserDetails userDetailsA = adultService.loadUserByUsername(email);
+        UserDetails userDetailsCh = childService.loadUserByUsername(email);
 
 
-        if (userDetails == null) {
+        if (userDetailsA == null && userDetailsCh == null) {
             AdultDTO user = new AdultDTO();
-            user.setAdult_name("");
-            user.setAdult_surname("");
+            user.setAdult_name(name);
+            user.setAdult_surname(surname);
             user.setAdult_password(password);
-            user.setAdult_phone_number("");
-            user.setAdult_email_address(username);
+            user.setAdult_phone_number(phoneNumber);
+            user.setAdult_email_address(email);
             adultService.saveAdult(user);
             return ResponseEntity.ok("ok");
         } else
