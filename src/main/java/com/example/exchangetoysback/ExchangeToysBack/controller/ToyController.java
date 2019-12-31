@@ -44,6 +44,6 @@ public class ToyController {
     @PostMapping(value = "filter")
     public List<Toy> getFilterToy(@RequestBody FilterDTO filterDTO) {
         System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " toy/filter");
-        return toyService.getToys();
+        return toyService.getFilterToys(filterDTO);
     }
 }

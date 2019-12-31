@@ -1,6 +1,7 @@
 package com.example.exchangetoysback.ExchangeToysBack.service;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AddToyDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.FilterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ToyRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
@@ -51,26 +52,21 @@ public class ToyService {
 
     public List<Toy> getYourToysAdvert(String email) {
         List<Toy> result = new ArrayList<>();
-        toyRepository.findAll().forEach(toy -> {
-            if (toy.getToy_owner_id().equals(email)) {
-                result.add(toy);
-            }
-        });
+        result.addAll(toyRepository.findByToy_owner_id(email));
         return result;
     }
 
     public List<Toy> getYourRentedToys(String email) {
         List<Toy> result = new ArrayList<>();
-        toyRepository.findAll().forEach(toy -> {
-            if (toy.getToy_current_holder_id() != null) {
-                if (toy.getToy_current_holder_id().equals(email)) {
-                    result.add(toy);
-                }
-            }
-
-        });
+        result.addAll(toyRepository.findByToy_current_holder_id(email));
         return result;
     }
 
 
+    public List<Toy> getFilterToys(FilterDTO filterDTO) {
+        List<Toy> result = new ArrayList<>();
+        //todo make good query
+        result.addAll(toyRepository.findByFirstNameAndLastName(filterDTO.getMainCategory(), 0, (filterDTO.isDidactic() ? 1 : 0), (filterDTO.isVintage() ? 1 : 0)));
+        return result;
+    }
 }
