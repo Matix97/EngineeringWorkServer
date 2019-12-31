@@ -39,7 +39,7 @@ public class ToyService {
             photos.append(";");
         }
         toy.setToy_photos(photos.toString());
-      //  System.out.println(toy.toString());
+        //  System.out.println(toy.toString());
         toyRepository.save(toy);
     }
 
@@ -48,5 +48,29 @@ public class ToyService {
         toyRepository.findAll().forEach(result::add);
         return result;
     }
+
+    public List<Toy> getYourToysAdvert(String email) {
+        List<Toy> result = new ArrayList<>();
+        toyRepository.findAll().forEach(toy -> {
+            if (toy.getToy_owner_id().equals(email)) {
+                result.add(toy);
+            }
+        });
+        return result;
+    }
+
+    public List<Toy> getYourRentedToys(String email) {
+        List<Toy> result = new ArrayList<>();
+        toyRepository.findAll().forEach(toy -> {
+            if (toy.getToy_current_holder_id() != null) {
+                if (toy.getToy_current_holder_id().equals(email)) {
+                    result.add(toy);
+                }
+            }
+
+        });
+        return result;
+    }
+
 
 }

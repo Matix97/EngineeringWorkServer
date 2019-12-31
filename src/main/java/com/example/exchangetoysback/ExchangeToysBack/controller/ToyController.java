@@ -4,6 +4,7 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AddToy
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.FilterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
+import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,17 @@ public class ToyController {
     public List<Toy> getToys() {
         return toyService.getToys();
     }
+
+    @GetMapping(value = "yourAdvert")
+    public List<Toy> getYourAdvertToys() {
+        return toyService.getYourToysAdvert(TokenInfo.getUserName());
+    }
+
+    @GetMapping(value = "yourRentedToy")
+    public List<Toy> getYourRentedToys() {
+        return toyService.getYourRentedToys(TokenInfo.getUserName());
+    }
+
 
     @PostMapping()
     public void createToy(@RequestBody AddToyDTO toyDTO) {
