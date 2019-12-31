@@ -24,7 +24,7 @@ public class ChildController {
 
     @GetMapping
     public List<Child> getChildren() {
-        return childService.getAllChildren();
+        return childService.getMyChildren(TokenInfo.getUserName());
     }
 
     @PostMapping()

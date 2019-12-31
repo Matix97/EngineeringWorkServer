@@ -21,8 +21,8 @@ public class ChildService implements UserDetailsService {
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
-    public void saveChild(ChildDTO childDTO){
-        Child child =new Child();
+    public void saveChild(ChildDTO childDTO) {
+        Child child = new Child();
         child.setChild_name(childDTO.getChild_name());
         child.setChild_parent_id(childDTO.getChild_parent_id());
         child.setChild_password(bcryptEncoder.encode(childDTO.getChild_password()));
@@ -34,9 +34,11 @@ public class ChildService implements UserDetailsService {
         childRepository.save(child);
     }
 
-    public void deleteChild(String childId){ childRepository.deleteById(Long.parseLong(childId));}
+    public void deleteChild(String childId) {
+        childRepository.deleteById(Long.parseLong(childId));
+    }
 
-    public List<Child> getAllChildren(){
+    public List<Child> getAllChildren() {
         List<Child> result = new ArrayList<>();
         childRepository.findAll().forEach(result::add);
         return result;
@@ -48,7 +50,7 @@ public class ChildService implements UserDetailsService {
         //check if is in database
         for (Child ch : getAllChildren()) {
             if (ch.getChild_name().equals(username)) {
-              //  System.out.println(ch.toString());
+                //  System.out.println(ch.toString());
                 user = ch;
                 break;
             }
@@ -58,6 +60,17 @@ public class ChildService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(user.getChild_name(), user.getChild_password(),
                 new ArrayList<>());
+    }
+
+    public List<Child> getMyChildren(String parentEmail) {
+        List<Child> result = new ArrayList<>();
+        childRepository.findAll().forEach(child -> {
+            if (child.getChild_parent_id().equals(parentEmail)) {
+                result.add(child);
+                //  System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " ChildService.getMyChildren: " + child);
+            }
+        });
+        return result;
     }
 
 }

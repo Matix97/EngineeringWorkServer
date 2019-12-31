@@ -39,7 +39,7 @@ public class ToyService {
             photos.append(";");
         }
         toy.setToy_photos(photos.toString());
-        System.out.println(toy.toString());
+      //  System.out.println(toy.toString());
         toyRepository.save(toy);
     }
 
