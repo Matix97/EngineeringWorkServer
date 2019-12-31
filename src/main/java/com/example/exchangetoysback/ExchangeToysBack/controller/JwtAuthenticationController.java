@@ -18,6 +18,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @RestController
 @CrossOrigin
@@ -38,20 +41,20 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
-        System.out.println("Auth: " + message);
+
         String[] s = EncryptionTools.decrypt(message).split(";");
         String email = s[0];
         String password = s[1];
         String role = s[2];
         if (email == null || password == null || role == null)
             return null;//a niech się wali jak daje złe dane
-        System.out.println("Authenticate\n" + email + "\t" + password + "\t" + role);
+        //System.out.println("Authenticate\n" + email + "\t" + password + "\t" + role);
         authenticate(email, password);
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email, role);
-        System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
+        // System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println("Token: " + token);
+        System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " /login Token: " + token);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new JwtResponse(token));
 

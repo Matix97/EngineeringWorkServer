@@ -48,7 +48,7 @@ public class ChildService implements UserDetailsService {
         //check if is in database
         for (Child ch : getAllChildren()) {
             if (ch.getChild_name().equals(username)) {
-                System.out.println(ch.toString());
+              //  System.out.println(ch.toString());
                 user = ch;
                 break;
             }

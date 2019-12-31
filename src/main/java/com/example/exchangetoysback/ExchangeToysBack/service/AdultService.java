@@ -50,7 +50,7 @@ public class AdultService implements UserDetailsService {
         //check if is in database and have correct credential
         for (Adult ch : getAllAdults()) {
             if (ch.getAdult_email_address().equals(email)) {
-                System.out.println(ch.toString());
+              //  System.out.println(ch.toString());
                 user = ch;
                 break;
             }

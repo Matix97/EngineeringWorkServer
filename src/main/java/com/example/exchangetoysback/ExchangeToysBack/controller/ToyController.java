@@ -1,11 +1,14 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AddToyDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.FilterDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,8 +29,9 @@ public class ToyController {
         toyService.createToy(toyDTO);
     }
 
-    @PostMapping(value = "getToys")
-    public String getFilterToy() {
-        return "getToys";
+    @PostMapping(value = "filter")
+    public List<Toy> getFilterToy(@RequestBody FilterDTO filterDTO) {
+        System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " toy/filter");
+        return toyService.getToys();
     }
 }
