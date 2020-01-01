@@ -11,4 +11,7 @@ import java.util.List;
 public interface ChildRepository extends CrudRepository<Child, Long> {
     @Query("FROM Child WHERE child_parent_id = ?1")
     List<Child> findByChild_parent_id(String child_parent_id);
+
+    @Query("FROM Child WHERE child_login = ?1")
+    Child findByUsername(String userName);
 }
