@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -65,8 +66,54 @@ public class ToyService {
 
     public List<Toy> getFilterToys(FilterDTO filterDTO) {
         List<Toy> result = new ArrayList<>();
+
         //todo make good query
-        result.addAll(toyRepository.findByFirstNameAndLastName(filterDTO.getMainCategory(), 0, (filterDTO.isDidactic() ? 1 : 0), (filterDTO.isVintage() ? 1 : 0)));
+        String any_keyword = "%";
+        if (filterDTO.getAnyKeyword() != null)
+            any_keyword = filterDTO.getAnyKeyword();
+        //tag
+        String tag = "toy_special_feature";
+        if (filterDTO.getTags() != null)
+            tag = filterDTO.getTags() + ";";
+        //main category
+        String main_category = "toy_main_category";
+        if (filterDTO.getMainCategory() != null)
+            main_category = filterDTO.getMainCategory();
+        //toy age category
+        List<Integer> toy_age_category = new ArrayList<>();
+        Integer iAC = filterDTO.getAge();
+        if (iAC != null)
+            toy_age_category.add(iAC);
+        else {
+            toy_age_category.addAll(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5)));
+        }
+        //didactic
+        List<Integer> is_didactic = new ArrayList<>();
+        Integer iD = filterDTO.isDidacticNumber();
+        if (iD != null)
+            is_didactic.add(iD);
+        else {
+            is_didactic.add(0);
+            is_didactic.add(1);
+        }
+        //vintage
+        List<Integer> is_vintage = new ArrayList<>();
+        Integer iV = filterDTO.isVintageNumber();
+        if (iV != null)
+            is_vintage.add(iV);
+        else {
+            is_vintage.add(0);
+            is_vintage.add(1);
+        }
+        if (filterDTO.getAnyKeyword() == null)//if we don't search toy_description
+            result.addAll(toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword));
+        else {
+            String finalAny_keyword = any_keyword;
+            toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(toy -> {
+                if (toy.getToy_description().contains(finalAny_keyword))
+                    result.add(toy);
+            });
+        }
         return result;
     }
 }

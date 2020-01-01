@@ -1,6 +1,5 @@
 package com.example.exchangetoysback.ExchangeToysBack.service.model;
 
-
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 

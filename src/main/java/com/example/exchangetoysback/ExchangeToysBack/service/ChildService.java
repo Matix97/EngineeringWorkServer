@@ -64,12 +64,7 @@ public class ChildService implements UserDetailsService {
 
     public List<Child> getMyChildren(String parentEmail) {
         List<Child> result = new ArrayList<>();
-        childRepository.findAll().forEach(child -> {
-            if (child.getChild_parent_id().equals(parentEmail)) {
-                result.add(child);
-                //  System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " ChildService.getMyChildren: " + child);
-            }
-        });
+        result.addAll(childRepository.findByChild_parent_id(parentEmail));
         return result;
     }
 

@@ -15,6 +15,7 @@ public interface ToyRepository extends CrudRepository<Toy, Long> {
     @Query("FROM Toy WHERE toy_current_holder_id = ?1")
     List<Toy> findByToy_current_holder_id(String firstName);
 
-    @Query("FROM Toy  WHERE toy_main_category = ?1 AND toy_age_category = ?2 AND toy_didactic = ?3 AND toy_vintage = ?4")
-    List<Toy> findByFirstNameAndLastName(String toy_main_category, Integer toy_age_category, Integer toy_didactic, Integer toy_vintage);
+    //we returned a data without filtering description
+    @Query("FROM Toy  WHERE toy_main_category = ?1 AND toy_age_category IN ?2 AND toy_didactic IN ?3 AND toy_vintage IN ?4 AND toy_special_feature = ?5 AND (toy_main_category LIKE ?6 OR toy_special_feature LIKE ?6)")
+    List<Toy> findByFilterDTO(String toy_main_category, List<Integer> toy_age_category, List<Integer> toy_didactic, List<Integer> toy_vintage, String tag, String any_keyword);
 }
