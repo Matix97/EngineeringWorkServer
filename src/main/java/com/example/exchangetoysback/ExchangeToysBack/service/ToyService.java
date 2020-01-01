@@ -8,8 +8,10 @@ import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -65,18 +67,19 @@ public class ToyService {
 
 
     public List<Toy> getFilterToys(FilterDTO filterDTO) {
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ------START-----");
         List<Toy> result = new ArrayList<>();
 
         //todo make good query
-        String any_keyword = "%";
+        String any_keyword = "%%";
         if (filterDTO.getAnyKeyword() != null)
-            any_keyword = filterDTO.getAnyKeyword();
+            any_keyword = "%" + filterDTO.getAnyKeyword() + "%";
         //tag
-        String tag = "toy_special_feature";
+        String tag = "%";
         if (filterDTO.getTags() != null)
             tag = filterDTO.getTags() + ";";
         //main category
-        String main_category = "toy_main_category";
+        String main_category = "%";
         if (filterDTO.getMainCategory() != null)
             main_category = filterDTO.getMainCategory();
         //toy age category
@@ -105,15 +108,16 @@ public class ToyService {
             is_vintage.add(0);
             is_vintage.add(1);
         }
-        if (filterDTO.getAnyKeyword() == null)//if we don't search toy_description
-            result.addAll(toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword));
-        else {
-            String finalAny_keyword = any_keyword;
-            toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(toy -> {
-                if (toy.getToy_description().contains(finalAny_keyword))
-                    result.add(toy);
-            });
-        }
+        toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(result::add);
+        //System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService after conversion____:\n"+"Main category: "+main_category+ "\nAge category: "+ toy_age_category.toString()
+//        +"\nIs didactic: "+is_didactic.toString()+"\nIs vintage: "+is_vintage.toString()+"\ntag: "+tag+"\nAny keyword: "+any_keyword);
+//        toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(toy -> {
+//            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ADDING____:" + toy);
+//            result.add(toy);
+//        });
+        // toyRepository.findByFilterDTObezLiczb(main_category,tag,any_keyword).forEach(result::add);
+        //toyRepository.findByFilterFUCK(main_category,tag).forEach(result::add);
+        //System.out.println("RESULT SIZE: "+result.size());
         return result;
     }
 }

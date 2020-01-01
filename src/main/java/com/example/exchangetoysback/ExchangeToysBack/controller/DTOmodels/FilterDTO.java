@@ -34,7 +34,8 @@ public class FilterDTO {
     }
 
     public boolean isPseudoEmpty() {
-        return mainCategory == null || mainCategory.equals("") || age == null || age.equals("");
+        return mainCategory == null && age == null && tags == null
+                && anyKeyword == null && isDidactic == null && isVintage == null;
     }
 
     public Integer isDidacticNumber() {
