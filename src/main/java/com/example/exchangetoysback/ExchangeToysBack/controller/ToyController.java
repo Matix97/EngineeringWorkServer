@@ -55,7 +55,7 @@ public class ToyController {
     }
 
     @PostMapping(value = "want")
-    public void suggestToy(@RequestParam Long toyId) {
+    public void suggestToy(@RequestBody Long toyId) {
         adultService.suggestToy(toyId, TokenInfo.getUserName());
     }
 }
