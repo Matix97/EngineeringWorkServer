@@ -7,9 +7,13 @@ import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GlobalPosition;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -87,24 +91,25 @@ public class ToyController {
             distance = childService.getRadius();
         }
         Integer finalDistance = distance;
+        List<Toy> finalLis = new ArrayList<>();
         toyList.forEach(toy -> {
-            if (finalDistance < getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
-                toyList.remove(toy);
+            // System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > "+ getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " "+latitude+ " "+ longitude+ " "+ toy.getToy_latitude()+ " "+ toy.getToy_longitude());
+            //if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
+            if (finalDistance > getDistance(51.8746158, 19.3622803, toy.getToy_latitude(), toy.getToy_longitude()))
+                finalLis.add(toy);
         });
-        return toyList;
+        return finalLis;
     }
 
     private int getDistance(double lat1, double lon1, double lat2, double lon2) {
 
-        double R = 6378.137; // Radius of earth in KM
-        double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-        double dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = R * c;
-        return (int) Math.round(d);
+        GeodeticCalculator geoCalc = new GeodeticCalculator();
+        Ellipsoid reference = Ellipsoid.WGS84;
+        GlobalPosition pointA = new GlobalPosition(lat1, lon1, 0.0); // Point A
+        GlobalPosition userPos = new GlobalPosition(lat2, lon2, 0.0); // Point B
+        double distance = geoCalc.calculateGeodeticCurve(reference, userPos, pointA).getEllipsoidalDistance(); // Distance between Point A and Point B
+        //  System.out.println("AFTER return: "+ (int) Math.round(distance));
+        return (int) Math.round(distance / 1000);
     }
 
     @PostMapping(value = "want")
