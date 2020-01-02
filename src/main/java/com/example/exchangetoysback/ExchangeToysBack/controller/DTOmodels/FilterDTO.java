@@ -14,6 +14,7 @@ public class FilterDTO {
     private Boolean isVintage;//null if both
     private double latitude;
     private double longitude;
+    private Integer radius;
 
     public Integer getAge() {
         if (age == null)
@@ -34,7 +35,7 @@ public class FilterDTO {
     }
 
     public boolean isPseudoEmpty() {
-        return mainCategory == null && age == null && tags == null
+        return mainCategory == null && age == null && tags == null && radius == null
                 && anyKeyword == null && isDidactic == null && isVintage == null;
     }
 

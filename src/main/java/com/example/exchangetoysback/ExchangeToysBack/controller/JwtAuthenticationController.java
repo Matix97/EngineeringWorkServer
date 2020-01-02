@@ -8,6 +8,7 @@ import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
 import com.example.exchangetoysback.ExchangeToysBack.tools.EncryptionTools;
+import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class JwtAuthenticationController {
         // System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " /login Token: " + token);
+        TokenInfo.setRole(role);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new JwtResponse(token));
 

@@ -43,6 +43,8 @@ public class ToyService {
             photos.append(";");
         }
         toy.setToy_photos(photos.toString());
+        toy.setToy_latitude(toyDTO.getToy_latitude());
+        toy.setToy_longitude(toyDTO.getToy_longitude());
         //  System.out.println(toy.toString());
         toyRepository.save(toy);
     }
@@ -109,15 +111,7 @@ public class ToyService {
             is_vintage.add(1);
         }
         toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(result::add);
-        //System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService after conversion____:\n"+"Main category: "+main_category+ "\nAge category: "+ toy_age_category.toString()
-//        +"\nIs didactic: "+is_didactic.toString()+"\nIs vintage: "+is_vintage.toString()+"\ntag: "+tag+"\nAny keyword: "+any_keyword);
-//        toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(toy -> {
-//            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ADDING____:" + toy);
-//            result.add(toy);
-//        });
-        // toyRepository.findByFilterDTObezLiczb(main_category,tag,any_keyword).forEach(result::add);
-        //toyRepository.findByFilterFUCK(main_category,tag).forEach(result::add);
-        //System.out.println("RESULT SIZE: "+result.size());
+
         return result;
     }
 }

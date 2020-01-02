@@ -16,6 +16,8 @@ public class AddToyDTO {
     private String toysFactoryName;
     private int qualityOfMade;//1-10
     private ArrayList<String> photosURLs;
+    private double toy_latitude;
+    private double toy_longitude;
 
     public void setAgeRange(String ageRange) {
         switch (ageRange) {

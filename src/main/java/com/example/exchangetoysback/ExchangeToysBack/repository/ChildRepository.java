@@ -14,4 +14,6 @@ public interface ChildRepository extends CrudRepository<Child, Long> {
 
     @Query("FROM Child WHERE child_login = ?1")
     Child findByUsername(String userName);
+
+
 }

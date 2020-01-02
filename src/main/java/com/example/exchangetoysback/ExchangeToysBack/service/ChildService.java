@@ -3,6 +3,7 @@ package com.example.exchangetoysback.ExchangeToysBack.service;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildDTO;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
+import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -68,4 +69,7 @@ public class ChildService implements UserDetailsService {
         return result;
     }
 
+    public Integer getRadius() {
+        return childRepository.findByUsername(TokenInfo.getUserName()).getChild_radius_area();
+    }
 }

@@ -36,6 +36,10 @@ public class Toy {
     private int toy_quality_of_made;
     @Length(max = 1500)
     private String toy_photos;
+    @NotNull
+    private double toy_latitude;
+    @NotNull
+    private double toy_longitude;
 
 
 }

@@ -2,6 +2,7 @@ package com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels;
 
 import lombok.Data;
 
+
 @Data
 public class ToyDTO {
     private Long toy_id;
@@ -18,4 +19,6 @@ public class ToyDTO {
     private String toy_factory_name;
     private int toy_quality_of_made;
     private String toy_photos;
+    private double toy_latitude;
+    private double toy_longitude;
 }
