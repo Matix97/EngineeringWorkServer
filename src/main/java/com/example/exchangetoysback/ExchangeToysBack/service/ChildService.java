@@ -50,7 +50,7 @@ public class ChildService implements UserDetailsService {
         Child user = null;
         //check if is in database
         for (Child ch : getAllChildren()) {
-            if (ch.getChild_name().equals(username)) {
+            if (ch.getChild_login().equals(username)) {
                 //  System.out.println(ch.toString());
                 user = ch;
                 break;
