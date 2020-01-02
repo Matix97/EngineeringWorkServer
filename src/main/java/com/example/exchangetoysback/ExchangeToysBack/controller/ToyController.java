@@ -85,8 +85,9 @@ public class ToyController {
 
     }
 
-    List<Toy> filterDistance(List<Toy> toyList, Integer distance, double latitude, double longitude, String role) {
-
+    List<Toy> filterDistance(List<Toy> toyList, Integer distance, Double latitude, Double longitude, String role) {
+        if (latitude == null || longitude == null)
+            return null;
         if (role.equals("child")) {//distance is null
             distance = childService.getRadius();
         }
@@ -95,7 +96,7 @@ public class ToyController {
         toyList.forEach(toy -> {
             // System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > "+ getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " "+latitude+ " "+ longitude+ " "+ toy.getToy_latitude()+ " "+ toy.getToy_longitude());
             //if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
-            if (finalDistance > getDistance(51.8746158, 19.3622803, toy.getToy_latitude(), toy.getToy_longitude()))
+            if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
                 finalLis.add(toy);
         });
         return finalLis;
