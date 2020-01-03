@@ -20,6 +20,7 @@ public class ToyService {
     private ToyRepository toyRepository;
 
     public void createToy(AddToyDTO toyDTO) {
+        System.out.println("CREATE START: AGE: " + toyDTO.getAgeRange());
         Toy toy = new Toy();
         toy.setToy_owner_id(TokenInfo.getUserName());
         toy.setToy_name(toyDTO.getName());
@@ -45,7 +46,7 @@ public class ToyService {
         toy.setToy_photos(photos.toString());
         toy.setToy_latitude(toyDTO.getToy_latitude());
         toy.setToy_longitude(toyDTO.getToy_longitude());
-        //  System.out.println(toy.toString());
+        System.out.println(toy.toString());
         toyRepository.save(toy);
     }
 
@@ -111,7 +112,7 @@ public class ToyService {
             is_vintage.add(1);
         }
         toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(result::add);
-
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ------END-----: " + result.size());
         return result;
     }
 }

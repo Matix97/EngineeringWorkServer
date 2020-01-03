@@ -19,23 +19,5 @@ public class AddToyDTO {
     private double toy_latitude;
     private double toy_longitude;
 
-    public void setAgeRange(String ageRange) {
-        switch (ageRange) {
-            case "0-3":
-                this.ageRange = 1;
-                break;
-            case "4-7":
-                this.ageRange = 2;
-                break;
-            case "8-12":
-                this.ageRange = 3;
-                break;
-            case "13-15":
-                this.ageRange = 4;
-                break;
-            case "16-100":
-                this.ageRange = 5;
-                break;
-        }
-    }
+
 }
