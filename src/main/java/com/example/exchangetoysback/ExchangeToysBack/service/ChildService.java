@@ -80,4 +80,5 @@ public class ChildService implements UserDetailsService {
     public Child getOneChild(String login) {
         return childRepository.findByUsername(login);
     }
+
 }

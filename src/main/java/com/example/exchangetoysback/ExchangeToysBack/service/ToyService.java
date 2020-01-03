@@ -25,6 +25,15 @@ public class ToyService {
         return toyRepository.findByIdMY(id);
     }
 
+    public void update(Toy toy) {
+        toyRepository.save(toy);
+    }
+
+    public boolean ifExist(Long id) {
+        Toy toy = toyRepository.findByIdMY(id);
+        return toy != null;
+    }
+
     public void createToy(AddToyDTO toyDTO) {
         System.out.println("CREATE START: AGE: " + toyDTO.getAgeRange());
         Toy toy = new Toy();
@@ -75,7 +84,6 @@ public class ToyService {
 
     public List<Toy> getFilterToys(FilterDTO filterDTO) {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ------START-----");
-        List<Toy> result = new ArrayList<>();
 
         //todo make good query
         String any_keyword = "%%";
@@ -115,7 +123,7 @@ public class ToyService {
             is_vintage.add(0);
             is_vintage.add(1);
         }
-        result.addAll(toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword));
+        List<Toy> result = new ArrayList<>(toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword));
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ------END-----: " + result.size());
         return result;
     }

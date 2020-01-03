@@ -33,6 +33,10 @@ public class AdultService implements UserDetailsService {
         this.bcryptEncoder = bcryptEncoder;
     }
 
+    public boolean ifExist(String email) {
+        Adult adult = adultRepository.findByEmail(email);
+        return adult != null;
+    }
 
     public void saveAdult(AdultDTO adultDTO) {
         Adult adult = new Adult();

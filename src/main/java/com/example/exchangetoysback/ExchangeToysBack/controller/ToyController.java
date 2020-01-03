@@ -2,8 +2,10 @@ package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AddToyDTO;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.FilterDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.RentalDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
+import com.example.exchangetoysback.ExchangeToysBack.service.RentalService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
@@ -27,11 +29,13 @@ public class ToyController {
     private final AdultService adultService;
 
     private final ChildService childService;
+    private final RentalService rentalService;
 
-    public ToyController(ToyService toyService, AdultService adultService, ChildService childService) {
+    public ToyController(ToyService toyService, AdultService adultService, ChildService childService, RentalService rentalService) {
         this.toyService = toyService;
         this.adultService = adultService;
         this.childService = childService;
+        this.rentalService = rentalService;
     }
 
 //    @GetMapping
@@ -117,5 +121,73 @@ public class ToyController {
     @PostMapping(value = "want")
     public void suggestToy(@RequestBody Long toyId) {
         adultService.suggestToy(toyId, TokenInfo.getUserName());
+    }
+
+    @PostMapping(value = "rent")
+    public void rentToy(@RequestBody RentalDTO rentalDTO) {
+        if (TokenInfo.getRole().equals("adult")) {
+            switch (rentalDTO.getTypOfTransaction()) {
+                case "timeExChange": {
+                    // TODO: 03/01/2020 sprawdzanie czy osoby są właścicelami zabawek
+                    System.out.println("timeExChange");
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+
+                    rentalService.creat(rentalDTO, rentalDTO.getSecondToyIdToTransaction());
+                    Toy toy2 = toyService.getById(rentalDTO.getSecondToyIdToTransaction());
+                    toy2.setToy_current_holder_id(TokenInfo.getUserName());
+                    toyService.update(toy2);
+                    break;
+                }
+                case "endlessExchange": {
+                    System.out.println("endlessExchange");
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+
+                    rentalService.creat(rentalDTO, rentalDTO.getSecondToyIdToTransaction());
+                    Toy toy2 = toyService.getById(rentalDTO.getSecondToyIdToTransaction());
+                    toy2.setToy_owner_id(TokenInfo.getUserName());
+                    toyService.update(toy2);
+                    break;
+                }
+                case "moneyCommitment": {
+                    System.out.println("moneyCommitment");
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+                    break;
+                }
+                case "freeCommitment": {
+                    System.out.println("freeCommitment");
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+                    break;
+                }
+                case "moneyTimeRental": {
+                    System.out.println("moneyTimeRental");
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+                    break;
+                }
+                case "freeTimeRental": {
+                    System.out.println("freeTimeRental");
+                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
+                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
+                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
+                    toyService.update(toy);
+                    break;
+                }
+            }
+        }
+
     }
 }
