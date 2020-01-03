@@ -5,7 +5,6 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.Filter
 import com.example.exchangetoysback.ExchangeToysBack.repository.ToyRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -16,8 +15,11 @@ import java.util.List;
 
 @Service
 public class ToyService {
-    @Autowired
-    private ToyRepository toyRepository;
+    private final ToyRepository toyRepository;
+
+    public ToyService(ToyRepository toyRepository) {
+        this.toyRepository = toyRepository;
+    }
 
     public Toy getById(Long id) {
         return toyRepository.findByIdMY(id);
@@ -61,15 +63,13 @@ public class ToyService {
     }
 
     public List<Toy> getYourToysAdvert(String email) {
-        List<Toy> result = new ArrayList<>();
-        result.addAll(toyRepository.findByToy_owner_id(email));
-        return result;
+        return new ArrayList<>(toyRepository.findByToy_owner_id(email));
+
     }
 
     public List<Toy> getYourRentedToys(String email) {
-        List<Toy> result = new ArrayList<>();
-        result.addAll(toyRepository.findByToy_current_holder_id(email));
-        return result;
+        return new ArrayList<>(toyRepository.findByToy_current_holder_id(email));
+
     }
 
 
@@ -115,7 +115,7 @@ public class ToyService {
             is_vintage.add(0);
             is_vintage.add(1);
         }
-        toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword).forEach(result::add);
+        result.addAll(toyRepository.findByFilterDTO(main_category, toy_age_category, is_didactic, is_vintage, tag, any_keyword));
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "____toyService ------END-----: " + result.size());
         return result;
     }

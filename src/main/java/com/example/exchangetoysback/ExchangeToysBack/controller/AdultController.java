@@ -5,16 +5,18 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.Sugges
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value="adult")
+@RequestMapping(value = "adult")
 public class AdultController {
-    @Autowired
-    private AdultService adultService;
+    private final AdultService adultService;
+
+    public AdultController(AdultService adultService) {
+        this.adultService = adultService;
+    }
 
     @GetMapping
     public List<Adult> getAdults() {

@@ -7,7 +7,6 @@ import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ToyRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,16 +19,19 @@ import java.util.List;
 
 @Service
 public class AdultService implements UserDetailsService {
-    @Autowired
-    private AdultRepository adultRepository;
+    private final AdultRepository adultRepository;
 
-    @Autowired
-    private ChildRepository childRepository;
-    @Autowired
-    private ToyRepository toyRepository;
+    private final ChildRepository childRepository;
+    private final ToyRepository toyRepository;
 
-    @Autowired
-    private PasswordEncoder bcryptEncoder;
+    private final PasswordEncoder bcryptEncoder;
+
+    public AdultService(AdultRepository adultRepository, ChildRepository childRepository, ToyRepository toyRepository, PasswordEncoder bcryptEncoder) {
+        this.adultRepository = adultRepository;
+        this.childRepository = childRepository;
+        this.toyRepository = toyRepository;
+        this.bcryptEncoder = bcryptEncoder;
+    }
 
 
     public void saveAdult(AdultDTO adultDTO) {
@@ -77,20 +79,20 @@ public class AdultService implements UserDetailsService {
             String parentId = ch.getChild_parent_id();
             Adult a = adultRepository.findByEmail(parentId);
             if (a != null) {
-                String list = a.getAdult_suggested_toys_list();
-                list += userName;
-                list += ":";
-                list += toyId;
-                list += ";";
+                StringBuilder list = new StringBuilder(a.getAdult_suggested_toys_list());
+                list.append(userName);
+                list.append(":");
+                list.append(toyId);
+                list.append(";");
                 if (list.length() > 500) {
-                    String[] sug = list.split(";");
-                    list = "";
+                    String[] sug = list.toString().split(";");
+                    list = new StringBuilder();
                     for (int i = 1; i < sug.length; i++) {
-                        list += sug[i];
-                        list += ";";
+                        list.append(sug[i]);
+                        list.append(";");
                     }
                 } else {
-                    a.setAdult_suggested_toys_list(list);
+                    a.setAdult_suggested_toys_list(list.toString());
                 }
                 adultRepository.save(a);
             }

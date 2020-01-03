@@ -4,7 +4,6 @@ import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildD
 import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,10 +18,13 @@ import java.util.List;
 @Service
 public class ChildService implements UserDetailsService {
 
-    @Autowired
-    private ChildRepository childRepository;
-    @Autowired
-    private PasswordEncoder bcryptEncoder;
+    private final ChildRepository childRepository;
+    private final PasswordEncoder bcryptEncoder;
+
+    public ChildService(ChildRepository childRepository, PasswordEncoder bcryptEncoder) {
+        this.childRepository = childRepository;
+        this.bcryptEncoder = bcryptEncoder;
+    }
 
     public void saveChild(ChildDTO childDTO) {
         Child child = new Child();
@@ -66,9 +68,8 @@ public class ChildService implements UserDetailsService {
     }
 
     public List<Child> getMyChildren(String parentEmail) {
-        List<Child> result = new ArrayList<>();
-        result.addAll(childRepository.findByChild_parent_id(parentEmail));
-        return result;
+        return new ArrayList<>(childRepository.findByChild_parent_id(parentEmail));
+
     }
 
     public Integer getRadius() {
