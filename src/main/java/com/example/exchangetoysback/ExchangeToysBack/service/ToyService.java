@@ -19,6 +19,10 @@ public class ToyService {
     @Autowired
     private ToyRepository toyRepository;
 
+    public Toy getById(Long id) {
+        return toyRepository.findByIdMY(id);
+    }
+
     public void createToy(AddToyDTO toyDTO) {
         System.out.println("CREATE START: AGE: " + toyDTO.getAgeRange());
         Toy toy = new Toy();

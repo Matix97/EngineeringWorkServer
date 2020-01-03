@@ -75,4 +75,8 @@ public class ChildService implements UserDetailsService {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + TokenInfo.getUserName());
         return childRepository.findByUsername(TokenInfo.getUserName()).getChild_radius_area();
     }
+
+    public Child getOneChild(String login) {
+        return childRepository.findByUsername(login);
+    }
 }

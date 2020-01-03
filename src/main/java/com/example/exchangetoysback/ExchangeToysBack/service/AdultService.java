@@ -1,8 +1,10 @@
 package com.example.exchangetoysback.ExchangeToysBack.service;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AdultDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.SuggestedToy;
 import com.example.exchangetoysback.ExchangeToysBack.repository.AdultRepository;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ChildRepository;
+import com.example.exchangetoysback.ExchangeToysBack.repository.ToyRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class AdultService implements UserDetailsService {
 
     @Autowired
     private ChildRepository childRepository;
+    @Autowired
+    private ToyRepository toyRepository;
 
     @Autowired
     private PasswordEncoder bcryptEncoder;
@@ -92,6 +96,19 @@ public class AdultService implements UserDetailsService {
             }
         }
 
+
+    }
+
+    //nie odporny na błędy(których w teorii nie powinnobyć)
+    public List<SuggestedToy> getSuggestion(String userName) {
+        List<SuggestedToy> sug = new ArrayList<>();
+        Adult adult = adultRepository.findByEmail(userName);
+        System.out.println("getSuggestion: \n" + adult.toString());
+        for (String s : adult.getAdult_suggested_toys_list().split(";")) {
+            String[] oneSuggestion = s.split(":");
+            sug.add(new SuggestedToy(childRepository.findByUsername(oneSuggestion[0]), toyRepository.findByIdMY(Long.valueOf(oneSuggestion[1]))));
+        }
+        return sug;
 
     }
 }
