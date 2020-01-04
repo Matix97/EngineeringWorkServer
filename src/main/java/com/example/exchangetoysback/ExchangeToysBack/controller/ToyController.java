@@ -120,6 +120,7 @@ public class ToyController {
 
     @PostMapping(value = "want")
     public void suggestToy(@RequestBody Long toyId) {
+        System.out.println("want: " + TokenInfo.getUserName());
         adultService.suggestToy(toyId, TokenInfo.getUserName());
     }
 
@@ -127,7 +128,7 @@ public class ToyController {
     public void rentToy(@RequestBody RentalDTO rentalDTO) {
         if (TokenInfo.getRole().equals("adult")) {
             switch (rentalDTO.getTypOfTransaction()) {
-                case "timeExChange": {
+                case "timeExchange": {
                     // TODO: 03/01/2020 sprawdzanie czy osoby są właścicelami zabawek
                     System.out.println("timeExChange");
                     Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());

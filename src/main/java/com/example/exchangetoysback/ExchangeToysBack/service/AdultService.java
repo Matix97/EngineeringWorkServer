@@ -61,15 +61,10 @@ public class AdultService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Adult user = null;
+        Adult user;
         //check if is in database and have correct credential
-        for (Adult ch : getAllAdults()) {
-            if (ch.getAdult_email_address().equals(email)) {
-                //  System.out.println(ch.toString());
-                user = ch;
-                break;
-            }
-        }
+        user = adultRepository.findByEmail(email);
+//
         if (user == null) {
             return null;
         }

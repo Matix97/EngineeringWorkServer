@@ -61,6 +61,8 @@ public class ToyService {
         toy.setToy_photos(photos.toString());
         toy.setToy_latitude(toyDTO.getToy_latitude());
         toy.setToy_longitude(toyDTO.getToy_longitude());
+        toy.setMoney(toyDTO.getMoney());
+        toy.setTypOfTransaction(toyDTO.getTypOfTransaction());
         System.out.println(toy.toString());
         toyRepository.save(toy);
     }

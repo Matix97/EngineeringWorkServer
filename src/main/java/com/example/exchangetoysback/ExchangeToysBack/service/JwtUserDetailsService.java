@@ -49,7 +49,9 @@ public class JwtUserDetailsService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                     new ArrayList<>());
         } else if (role.equals("child")) {
+          //  System.out.println("JwtDetailsSErive: "+username);
             UserDetails user = childService.loadUserByUsername(username);
+            //   System.out.println("JWTDETAILSERVICE: "+user.getUsername()+user.getPassword());
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }

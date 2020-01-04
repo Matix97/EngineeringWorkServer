@@ -18,6 +18,7 @@ public class AddToyDTO {
     private ArrayList<String> photosURLs;
     private double toy_latitude;
     private double toy_longitude;
-
+    private Double money;
+    private String typOfTransaction;
 
 }

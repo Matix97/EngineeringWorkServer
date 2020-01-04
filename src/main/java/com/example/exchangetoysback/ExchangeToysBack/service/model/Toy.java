@@ -23,7 +23,7 @@ public class Toy {
     private String toy_description;
     private int toy_age_category;
     @NotNull
-    @Length(max = 10)
+    @Length(max = 20)
     private String toy_main_category;
     @Length(max = 200)
     private String toy_special_feature;
@@ -40,6 +40,9 @@ public class Toy {
     private double toy_latitude;
     @NotNull
     private double toy_longitude;
+    private Double money;
+    @Length(max = 20)
+    private String typOfTransaction;
 
 
 }

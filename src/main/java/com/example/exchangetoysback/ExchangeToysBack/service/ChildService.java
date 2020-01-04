@@ -43,27 +43,18 @@ public class ChildService implements UserDetailsService {
         childRepository.deleteById(Long.parseLong(childId));
     }
 
-    public List<Child> getAllChildren() {
-        List<Child> result = new ArrayList<>();
-        childRepository.findAll().forEach(result::add);
-        return result;
-    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Child user = null;
+        Child user;
         //check if is in database
-        for (Child ch : getAllChildren()) {
-            if (ch.getChild_login().equals(username)) {
-                //  System.out.println(ch.toString());
-                user = ch;
-                break;
-            }
-        }
+        user = childRepository.findByUsername(username);
+
         if (user == null) {
             return null;
         }
-        return new org.springframework.security.core.userdetails.User(user.getChild_name(), user.getChild_password(),
+        return new org.springframework.security.core.userdetails.User(user.getChild_login(), user.getChild_password(),
                 new ArrayList<>());
     }
 

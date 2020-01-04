@@ -18,7 +18,7 @@ public class RentalDTO {
     private Long toyIdToTransaction;
     private Long secondToyIdToTransaction;//must when exchange
     //   private Integer ifReturned;//1 if yes, 0 if no
-    private String typOfTransaction;//exchange(wymiana), commitment(oddanie), rental(wypożyczenie), {timeExChange, endlessExchange, moneyCommitment, freeCommitment,moneyTimeRental, freeTimeRental}
-    private Double money;
+    private String typOfTransaction;//exchange(wymiana), commitment(oddanie), rental(wypożyczenie), {timeExchange, endlessExchange, moneyCommitment, freeCommitment,moneyTimeRental, freeTimeRental}
+    private Double money;//weżmie się chyba z zabwakwi
 
 }

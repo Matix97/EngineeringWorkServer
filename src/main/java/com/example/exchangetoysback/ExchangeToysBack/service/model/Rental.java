@@ -14,7 +14,8 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rental_id;
-    @NotNull
+    // TODO: 03/01/2020 potem odkomentuj 
+    // @NotNull
     private Date rentDate;
     private Date suggestedReturnDate;
     private Date returnDate;

@@ -53,7 +53,7 @@ public class JwtAuthenticationController {
         authenticate(email, password);
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email, role);
-        // System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
+        // System.out.println("JwtAuthenticationController: "+userDetails.getUsername() + " " + userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
         System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " /login Token: " + token);
         TokenInfo.setRole(role);
@@ -78,7 +78,7 @@ public class JwtAuthenticationController {
         UserDetails userDetailsA = adultService.loadUserByUsername(email);
         UserDetails userDetailsCh = childService.loadUserByUsername(email);
 
-
+        //  System.out.println("START REAGISTER");
         if (userDetailsA == null && userDetailsCh == null) {
             AdultDTO user = new AdultDTO();
             user.setAdult_name(name);
@@ -87,6 +87,7 @@ public class JwtAuthenticationController {
             user.setAdult_phone_number(phoneNumber);
             user.setAdult_email_address(email);
             adultService.saveAdult(user);
+            //        System.out.println("REGISTER: "+user.toString());
             return ResponseEntity.ok("ok");
         } else
             return ResponseEntity.ok("user exist");
