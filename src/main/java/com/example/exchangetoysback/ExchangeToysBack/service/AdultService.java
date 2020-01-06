@@ -105,6 +105,9 @@ public class AdultService implements UserDetailsService {
         List<SuggestedToy> sug = new ArrayList<>();
         Adult adult = adultRepository.findByEmail(userName);
         System.out.println("getSuggestion: \n" + adult.toString());
+        if (adult.getAdult_suggested_toys_list().equals("") || adult.getAdult_suggested_toys_list() == null) {
+            return null;
+        }
         for (String s : adult.getAdult_suggested_toys_list().split(";")) {
             String[] oneSuggestion = s.split(":");
             sug.add(new SuggestedToy(childRepository.findByUsername(oneSuggestion[0]), toyRepository.findByIdMY(Long.valueOf(oneSuggestion[1]))));

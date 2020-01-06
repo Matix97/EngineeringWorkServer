@@ -2,6 +2,7 @@ package com.example.exchangetoysback.ExchangeToysBack.service;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AddToyDTO;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.FilterDTO;
+import com.example.exchangetoysback.ExchangeToysBack.repository.AdultRepository;
 import com.example.exchangetoysback.ExchangeToysBack.repository.ToyRepository;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
@@ -16,9 +17,11 @@ import java.util.List;
 @Service
 public class ToyService {
     private final ToyRepository toyRepository;
+    private final AdultRepository adultRepository;
 
-    public ToyService(ToyRepository toyRepository) {
+    public ToyService(ToyRepository toyRepository, AdultRepository adultRepository) {
         this.toyRepository = toyRepository;
+        this.adultRepository = adultRepository;
     }
 
     public Toy getById(Long id) {
@@ -63,6 +66,7 @@ public class ToyService {
         toy.setToy_longitude(toyDTO.getToy_longitude());
         toy.setMoney(toyDTO.getMoney());
         toy.setTypOfTransaction(toyDTO.getTypOfTransaction());
+        toy.setToy_owner_phone_number(adultRepository.findByEmail(TokenInfo.getUserName()).getAdult_phone_number());
         System.out.println(toy.toString());
         toyRepository.save(toy);
     }

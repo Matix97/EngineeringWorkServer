@@ -43,6 +43,8 @@ public class Toy {
     private Double money;
     @Length(max = 20)
     private String typOfTransaction;
+    @Length(max = 12)
+    private String toy_owner_phone_number;
 
 
 }

@@ -7,6 +7,8 @@ import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,6 +38,9 @@ public class AdultController {
 
     @GetMapping(value = "suggestion")
     public List<SuggestedToy> getSuggestion() {
-        return adultService.getSuggestion(TokenInfo.getUserName());
+        if (TokenInfo.getRole().equals("adult")) {
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " adult/suggestion:\n " + TokenInfo.getUserName());
+            return adultService.getSuggestion(TokenInfo.getUserName());
+        } else return null;
     }
 }

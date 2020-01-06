@@ -23,4 +23,5 @@ public class ToyDTO {
     private double toy_longitude;
     private Double money;
     private String typOfTransaction;
+    private String toy_owner_phone_number;
 }

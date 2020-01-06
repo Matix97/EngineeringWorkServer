@@ -127,6 +127,7 @@ public class ToyController {
     @PostMapping(value = "rent")
     public void rentToy(@RequestBody RentalDTO rentalDTO) {
         if (TokenInfo.getRole().equals("adult")) {
+            System.out.println("On start: " + rentalDTO.toString());
             switch (rentalDTO.getTypOfTransaction()) {
                 case "timeExchange": {
                     // TODO: 03/01/2020 sprawdzanie czy osoby są właścicelami zabawek
