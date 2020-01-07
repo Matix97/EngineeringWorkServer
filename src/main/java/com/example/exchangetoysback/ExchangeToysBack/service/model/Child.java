@@ -30,6 +30,8 @@ public class Child {
     private double child_latitude;
     private double child_longitude;
     private String child_suggestion;
+    private String availableAge;
+    private String availableTag;
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildUpdateDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
@@ -30,6 +31,21 @@ public class ChildController {
     @GetMapping
     public List<Child> getChildren() {
         return childService.getMyChildren(TokenInfo.getUserName());
+    }
+
+    @PostMapping("update")
+    public Child updateChild(@RequestBody ChildUpdateDTO childDTO) {
+        Child ch = childService.getOneChild(childDTO.getChild_login());
+        ch.setAvailableTag(childDTO.getAvailableTag());
+        StringBuilder f = new StringBuilder();
+        for (String s : childDTO.getAvailableAge()) {
+            f.append(s);
+            f.append(";");
+        }
+        ch.setAvailableAge(f.toString());
+        ch.setChild_radius_area(childDTO.getChild_radius_area());
+        childService.update(ch);
+        return ch;
     }
 
     @PostMapping()
@@ -65,7 +81,7 @@ public class ChildController {
             childDTO.setChild_radius_area(Integer.parseInt(radius));
             childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
             System.out.println("Before create child: " + childDTO.toString());
-            childService.saveChild(childDTO);
+            childService.createChild(childDTO);
             //  System.out.println("RETURN 1");
             return ResponseEntity.ok(childDTO);
 

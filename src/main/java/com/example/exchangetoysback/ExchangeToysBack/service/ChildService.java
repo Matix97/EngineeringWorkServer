@@ -26,7 +26,7 @@ public class ChildService implements UserDetailsService {
         this.bcryptEncoder = bcryptEncoder;
     }
 
-    public void saveChild(ChildDTO childDTO) {
+    public void createChild(ChildDTO childDTO) {
         Child child = new Child();
         child.setChild_name(childDTO.getChild_name());
         child.setChild_parent_id(childDTO.getChild_parent_id());
@@ -37,6 +37,8 @@ public class ChildService implements UserDetailsService {
         child.setChild_login(childDTO.getChild_login());
         child.setChild_age(childDTO.getChild_age());
         child.setChild_suggestion("");
+        child.setAvailableAge("0-3;4-7;8-12;13-15;16-100");
+        child.setAvailableTag("");
         childRepository.save(child);
     }
 
