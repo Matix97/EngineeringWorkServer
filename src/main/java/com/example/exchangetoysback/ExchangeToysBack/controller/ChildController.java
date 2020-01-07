@@ -3,7 +3,9 @@ package com.example.exchangetoysback.ExchangeToysBack.controller;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.ChildDTO;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
+import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +24,8 @@ public class ChildController {
     private ChildService childService;
     @Autowired
     private AdultService adultService;
+    @Autowired
+    private ToyService toyService;
 
     @GetMapping
     public List<Child> getChildren() {
@@ -47,30 +52,43 @@ public class ChildController {
             return new ResponseEntity("incorrect data", HttpStatus.BAD_REQUEST);//a niech się wali jak daje złe dane
         }
         System.out.println("przed szukaniem w bazie");
-            UserDetails userDetailsCh = childService.loadUserByUsername(login);
-            UserDetails userDetailsA = adultService.loadUserByUsername(login);
-            if (userDetailsA == null && userDetailsCh == null) {
-                //we create child
-                System.out.println("we create child");
-                ChildDTO childDTO = new ChildDTO();
-                childDTO.setChild_name(name);
-                childDTO.setChild_login(login);
-                childDTO.setChild_password(password);
-                childDTO.setChild_age(Integer.parseInt(childAge));
-                childDTO.setChild_radius_area(Integer.parseInt(radius));
-                childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
-                System.out.println("Before create child: " + childDTO.toString());
-                childService.saveChild(childDTO);
-                //  System.out.println("RETURN 1");
-                return ResponseEntity.ok(childDTO);
+        UserDetails userDetailsCh = childService.loadUserByUsername(login);
+        UserDetails userDetailsA = adultService.loadUserByUsername(login);
+        if (userDetailsA == null && userDetailsCh == null) {
+            //we create child
+            System.out.println("we create child");
+            ChildDTO childDTO = new ChildDTO();
+            childDTO.setChild_name(name);
+            childDTO.setChild_login(login);
+            childDTO.setChild_password(password);
+            childDTO.setChild_age(Integer.parseInt(childAge));
+            childDTO.setChild_radius_area(Integer.parseInt(radius));
+            childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
+            System.out.println("Before create child: " + childDTO.toString());
+            childService.saveChild(childDTO);
+            //  System.out.println("RETURN 1");
+            return ResponseEntity.ok(childDTO);
 
-            } else {
-                //return message that given login is engaged
-                //   System.out.println("RETURN 2");
-                return new ResponseEntity("given login is busy", HttpStatus.BAD_REQUEST);//one more time stupid, but it will be work fine
+        } else {
+            //return message that given login is engaged
+            //   System.out.println("RETURN 2");
+            return new ResponseEntity("given login is busy", HttpStatus.BAD_REQUEST);//one more time stupid, but it will be work fine
+        }
+
+
+    }
+
+    @GetMapping(value = "suggestion")
+    public List<Toy> getSuggestion() {
+        Child child = childService.getOneChild(TokenInfo.getUserName());
+        List<Toy> retList = new ArrayList<>();
+        for (String s : child.getChild_suggestion().split(";")) {
+            try {
+                retList.add(toyService.getById(Long.valueOf(s)));
+            } catch (Exception e) {
             }
-
-
+        }
+        return retList;
     }
 
     @DeleteMapping()

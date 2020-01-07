@@ -7,11 +7,15 @@ import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.RentalService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GlobalPosition;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -120,8 +124,62 @@ public class ToyController {
 
     @PostMapping(value = "want")
     public void suggestToy(@RequestBody Long toyId) {
-        System.out.println("want: " + TokenInfo.getUserName());
-        adultService.suggestToy(toyId, TokenInfo.getUserName());
+        if (TokenInfo.getRole().equals("child")) {
+            System.out.println("want: " + TokenInfo.getUserName());
+            Child child = childService.getOneChild(TokenInfo.getUserName());
+            String[] sug = child.getChild_suggestion().split(";");
+            if (sug.length >= 10) {
+                //nie możesz już dodać zabawki
+            } else {
+                adultService.suggestToy(toyId, TokenInfo.getUserName());
+                String finalSug = child.getChild_suggestion();
+                finalSug += toyId.toString();
+                childService.updateSuggestion(child, finalSug);
+            }
+
+        }
+
+    }
+
+    @DeleteMapping(value = "want/{id}")
+    public ResponseEntity<Long> deleteSuggestToy(@PathVariable Long id) {
+        boolean isRemoved = deleteSuggestion(id);
+
+        if (!isRemoved) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    private boolean deleteSuggestion(Long id) {
+        Child child = childService.getOneChild(TokenInfo.getUserName());
+        Adult adult = adultService.getOneAdult(child.getChild_parent_id());
+        String[] childSug = child.getChild_suggestion().split(";");
+        StringBuilder finalChildSug = new StringBuilder();
+        for (String s : childSug) {
+            if (!s.equals(id.toString())) {
+                finalChildSug.append(s);
+                finalChildSug.append(";");
+            }
+        }
+        child.setChild_suggestion(finalChildSug.toString());
+
+        String[] adultSug = adult.getAdult_suggested_toys_list().split(";");
+        StringBuilder finalAdultSug = new StringBuilder();
+        String toCompare = TokenInfo.getUserName() + ";" + id.toString();
+        for (String s : adultSug) {
+            if (!s.equals(toCompare)) {
+                finalAdultSug.append(s);
+                finalAdultSug.append(";");
+            }
+        }
+        adult.setAdult_suggested_toys_list(finalAdultSug.toString());
+
+        childService.update(child);
+        adultService.update(adult);
+
+        return true;
     }
 
     @PostMapping(value = "rent")

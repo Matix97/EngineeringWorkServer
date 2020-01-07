@@ -36,6 +36,7 @@ public class ChildService implements UserDetailsService {
         child.setChild_longitude(childDTO.getChild_longitude());
         child.setChild_login(childDTO.getChild_login());
         child.setChild_age(childDTO.getChild_age());
+        child.setChild_suggestion("");
         childRepository.save(child);
     }
 
@@ -43,6 +44,14 @@ public class ChildService implements UserDetailsService {
         childRepository.deleteById(Long.parseLong(childId));
     }
 
+    public void updateSuggestion(Child child, String suggestions) {
+        child.setChild_suggestion(suggestions);
+        childRepository.save(child);
+    }
+
+    public void update(Child ch) {
+        childRepository.save(ch);
+    }
 
 
     @Override

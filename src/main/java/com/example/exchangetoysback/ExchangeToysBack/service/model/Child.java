@@ -29,6 +29,7 @@ public class Child {
     private int child_radius_area;
     private double child_latitude;
     private double child_longitude;
+    private String child_suggestion;
 
 
 }

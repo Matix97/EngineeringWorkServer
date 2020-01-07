@@ -38,6 +38,14 @@ public class AdultService implements UserDetailsService {
         return adult != null;
     }
 
+    public Adult getOneAdult(String email) {
+        return adultRepository.findByEmail(email);
+    }
+
+    public void update(Adult a) {
+        adultRepository.save(a);
+    }
+
     public void saveAdult(AdultDTO adultDTO) {
         Adult adult = new Adult();
         adult.setAdult_name(adultDTO.getAdult_name());
