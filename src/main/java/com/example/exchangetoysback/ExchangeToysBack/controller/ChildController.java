@@ -37,12 +37,7 @@ public class ChildController {
     public Child updateChild(@RequestBody ChildUpdateDTO childDTO) {
         Child ch = childService.getOneChild(childDTO.getChild_login());
         ch.setAvailableTag(childDTO.getAvailableTag());
-        StringBuilder f = new StringBuilder();
-        for (String s : childDTO.getAvailableAge()) {
-            f.append(s);
-            f.append(";");
-        }
-        ch.setAvailableAge(f.toString());
+        ch.setAvailableAge(childDTO.getAvailableAge());
         ch.setChild_radius_area(childDTO.getChild_radius_area());
         childService.update(ch);
         return ch;

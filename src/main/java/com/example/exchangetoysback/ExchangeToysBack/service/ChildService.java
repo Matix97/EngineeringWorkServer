@@ -38,9 +38,10 @@ public class ChildService implements UserDetailsService {
         child.setChild_age(childDTO.getChild_age());
         child.setChild_suggestion("");
         child.setAvailableAge("0-3;4-7;8-12;13-15;16-100");
-        child.setAvailableTag("");
+        child.setAvailableTag("soft;funny;scary;groupToy;collector;boys;girls");
         childRepository.save(child);
     }
+
 
     public void deleteChild(String childId) {
         childRepository.deleteById(Long.parseLong(childId));
