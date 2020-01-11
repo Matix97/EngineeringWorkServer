@@ -95,6 +95,7 @@ public class ChildController {
         List<Toy> retList = new ArrayList<>();
         for (String s : child.getChild_suggestion().split(";")) {
             try {
+            //    System.out.println("In child COntroller: "+s);
                 retList.add(toyService.getById(Long.valueOf(s)));
             } catch (Exception e) {
             }

@@ -25,6 +25,7 @@ public class ToyService {
     }
 
     public Toy getById(Long id) {
+        //System.out.println("toy service: "+id);
         return toyRepository.findByIdMY(id);
     }
 

@@ -103,7 +103,7 @@ public class ToyController {
         Integer finalDistance = distance;
         List<Toy> finalLis = new ArrayList<>();
         toyList.forEach(toy -> {
-            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > " + getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " " + latitude + " " + longitude + " " + toy.getToy_latitude() + " " + toy.getToy_longitude());
+          //  System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > " + getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " " + latitude + " " + longitude + " " + toy.getToy_latitude() + " " + toy.getToy_longitude());
             //if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
             if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
                 finalLis.add(toy);
@@ -118,7 +118,7 @@ public class ToyController {
         GlobalPosition pointA = new GlobalPosition(lat1, lon1, 0.0); // Point A
         GlobalPosition userPos = new GlobalPosition(lat2, lon2, 0.0); // Point B
         double distance = geoCalc.calculateGeodeticCurve(reference, userPos, pointA).getEllipsoidalDistance(); // Distance between Point A and Point B
-        System.out.println("BEFORE return: " + distance / 1000 + " points A: " + pointA.toString() + " points B: " + userPos.toString());
+        // System.out.println("BEFORE return: " + distance / 1000 + " points A: " + pointA.toString() + " points B: " + userPos.toString());
         return (int) Math.round(distance / 1000);
     }
 
@@ -131,14 +131,27 @@ public class ToyController {
             if (sug.length >= 10) {
                 //nie możesz już dodać zabawki
             } else {
-                adultService.suggestToy(toyId, TokenInfo.getUserName());
-                String finalSug = child.getChild_suggestion();
-                finalSug += toyId.toString();
-                childService.updateSuggestion(child, finalSug);
+                if (thisToyWasInYourFavorite(toyId, child)) {
+                    adultService.suggestToy(toyId, TokenInfo.getUserName());
+                    String finalSug = child.getChild_suggestion();
+                    finalSug += toyId.toString();
+                    finalSug += ";";
+                    childService.updateSuggestion(child, finalSug);
+                }
+
             }
 
         }
 
+    }
+
+    private boolean thisToyWasInYourFavorite(Long toyId, Child child) {
+        String[] suggestion = child.getChild_suggestion().split(";");
+        for (String s : suggestion) {
+            if (Long.valueOf(s).equals(toyId))
+                return false;
+        }
+        return true;
     }
 
     @DeleteMapping(value = "want/{id}")
