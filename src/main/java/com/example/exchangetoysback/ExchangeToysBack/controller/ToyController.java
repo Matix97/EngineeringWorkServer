@@ -147,9 +147,12 @@ public class ToyController {
 
     private boolean thisToyWasInYourFavorite(Long toyId, Child child) {
         String[] suggestion = child.getChild_suggestion().split(";");
-        for (String s : suggestion) {
-            if (Long.valueOf(s).equals(toyId))
-                return false;
+        if (!suggestion[0].equals("")) {
+            for (String s : suggestion) {
+                if (Long.valueOf(s).equals(toyId))
+                    return false;
+            }
+
         }
         return true;
     }
@@ -180,8 +183,10 @@ public class ToyController {
 
         String[] adultSug = adult.getAdult_suggested_toys_list().split(";");
         StringBuilder finalAdultSug = new StringBuilder();
-        String toCompare = TokenInfo.getUserName() + ";" + id.toString();
+        String toCompare = TokenInfo.getUserName() + ":" + id.toString();
+        // System.out.println("To comparre: "+toCompare);
         for (String s : adultSug) {
+            //   System.out.println("Compared: "+s);
             if (!s.equals(toCompare)) {
                 finalAdultSug.append(s);
                 finalAdultSug.append(";");
