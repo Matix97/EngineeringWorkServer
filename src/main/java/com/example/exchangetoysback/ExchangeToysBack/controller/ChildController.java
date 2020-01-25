@@ -44,6 +44,7 @@ public class ChildController {
         ch.setAvailableTag(childDTO.getAvailableTag());
         ch.setAvailableAge(childDTO.getAvailableAge());
         ch.setChild_radius_area(childDTO.getChild_radius_area());
+        ch.setAmountOfSuggesstedToy(childDTO.getAmount());
         childService.update(ch);
         return ch;
     }
@@ -64,7 +65,9 @@ public class ChildController {
         String password = s[2];
         String childAge = s[3];
         String radius = s[4];
-        if (name == null || password == null || login == null || radius == null || childAge == null) {
+        String age = s[5];
+        Integer amount = Integer.valueOf(s[6]);
+        if (name == null || password == null || login == null || radius == null || childAge == null || age == null || amount == null) {
             return new ResponseEntity("incorrect data", HttpStatus.BAD_REQUEST);//a niech się wali jak daje złe dane
         }
         System.out.println("przed szukaniem w bazie");
@@ -80,6 +83,8 @@ public class ChildController {
             childDTO.setChild_age(Integer.parseInt(childAge));
             childDTO.setChild_radius_area(Integer.parseInt(radius));
             childDTO.setChild_parent_id(TokenInfo.getInstance().getUserName());
+            childDTO.setAvailableAge(age);
+            childDTO.setAmountOfSuggesstedToy(amount);
             System.out.println("Before create child: " + childDTO.toString());
             childService.createChild(childDTO);
             //  System.out.println("RETURN 1");

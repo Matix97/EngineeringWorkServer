@@ -9,6 +9,7 @@ public class ChildUpdateDTO {
     private int child_radius_area;
     private String availableAge;
     private String availableTag;
+    private Integer amount;
 
 
 }

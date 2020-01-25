@@ -32,4 +32,5 @@ public class Child {
     private String child_suggestion;
     private String availableAge;
     private String availableTag;
+    private Integer amountOfSuggesstedToy;
 }

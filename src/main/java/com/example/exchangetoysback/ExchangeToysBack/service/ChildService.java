@@ -37,8 +37,9 @@ public class ChildService implements UserDetailsService {
         child.setChild_login(childDTO.getChild_login());
         child.setChild_age(childDTO.getChild_age());
         child.setChild_suggestion("");
-        child.setAvailableAge("0-3;4-7;8-12;13-15;16-100");
+        child.setAvailableAge(childDTO.getAvailableAge());
         child.setAvailableTag("soft;funny;scary;groupToy;collector;boys;girls");
+        child.setAmountOfSuggesstedToy(childDTO.getAmountOfSuggesstedToy());
         childRepository.save(child);
     }
 

@@ -12,6 +12,9 @@ public class ChildDTO {
     private double child_latitude;
     private double child_longitude;
     private int child_age;
+    private String availableAge;
+    private String availableTag;
+    private Integer amountOfSuggesstedToy;
 
 
 }
