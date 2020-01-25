@@ -55,7 +55,7 @@ public class ChildController {
         //System.out.println("childController: " + TokenInfo.getInstance().getUserName() + "given string: " + message.substring(1, message.length() - 1));
 
 
-        String[] s = message.substring(1, message.length() - 1).split(";");
+        String[] s = message.substring(1, message.length() - 1).split(">");
 //        for (String s1 : s) {
 //            System.out.println(s1);
 //        }
