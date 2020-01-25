@@ -46,7 +46,7 @@ public class AdultService implements UserDetailsService {
         adultRepository.save(a);
     }
 
-    public void saveAdult(AdultDTO adultDTO) {
+    public Adult saveAdult(AdultDTO adultDTO) {
         Adult adult = new Adult();
         adult.setAdult_name(adultDTO.getAdult_name());
         adult.setAdult_surname(adultDTO.getAdult_surname());
@@ -55,6 +55,7 @@ public class AdultService implements UserDetailsService {
         adult.setAdult_email_address(adultDTO.getAdult_email_address());
         adult.setAdult_suggested_toys_list("");
         adultRepository.save(adult);
+        return adult;
     }
 
     public void deleteAdult(String adultId) {
@@ -112,7 +113,7 @@ public class AdultService implements UserDetailsService {
     public List<SuggestedToy> getSuggestion(String userName) {
         List<SuggestedToy> sug = new ArrayList<>();
         Adult adult = adultRepository.findByEmail(userName);
-   //     System.out.println("getSuggestion: \n" + adult.toString());
+        //     System.out.println("getSuggestion: \n" + adult.toString());
         if (adult.getAdult_suggested_toys_list().equals("") || adult.getAdult_suggested_toys_list() == null) {
             return null;
         }
@@ -122,5 +123,8 @@ public class AdultService implements UserDetailsService {
         }
         return sug;
 
+    }
+
+    public void updateAdult(AdultDTO adultDTO) {
     }
 }

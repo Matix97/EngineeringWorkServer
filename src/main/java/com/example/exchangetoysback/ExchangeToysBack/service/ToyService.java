@@ -18,10 +18,12 @@ import java.util.List;
 public class ToyService {
     private final ToyRepository toyRepository;
     private final AdultRepository adultRepository;
+    private final ChildService childService;
 
-    public ToyService(ToyRepository toyRepository, AdultRepository adultRepository) {
+    public ToyService(ToyRepository toyRepository, AdultRepository adultRepository, ChildService childService) {
         this.toyRepository = toyRepository;
         this.adultRepository = adultRepository;
+        this.childService = childService;
     }
 
     public Toy getById(Long id) {
@@ -110,7 +112,11 @@ public class ToyService {
         if (iAC != null)
             toy_age_category.add(iAC);
         else {
-            toy_age_category.addAll(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5)));
+            if (TokenInfo.getRole().equals("child"))
+                toy_age_category.addAll(childService.getChildAvailableAge(TokenInfo.getUserName()));
+            if (TokenInfo.getRole().equals("adult"))
+                toy_age_category.addAll(Arrays.asList(1, 2, 3, 4, 5));
+
         }
         //didactic
         List<Integer> is_didactic = new ArrayList<>();

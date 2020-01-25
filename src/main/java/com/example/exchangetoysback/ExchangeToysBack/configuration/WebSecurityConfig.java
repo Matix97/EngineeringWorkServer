@@ -1,8 +1,7 @@
 package com.example.exchangetoysback.ExchangeToysBack.configuration;
+
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtAuthenticationEntryPoint;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtRequestFilter;
-import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
-import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,7 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     }

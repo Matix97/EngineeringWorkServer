@@ -84,4 +84,31 @@ public class ChildService implements UserDetailsService {
         return childRepository.findByUsername(login);
     }
 
+    public List<Integer> getChildAvailableAge(String login) {
+        Child child = getOneChild(login);
+        ArrayList<Integer> ret = new ArrayList<>();
+        for (String s : child.getAvailableAge().split(";")) {
+            ret.add(getAgeParsed(s));
+        }
+        return ret;
+    }
+
+    public Integer getAgeParsed(String age) {
+        if (age == null)
+            return null;
+        switch (age) {
+            case "0-3":
+                return 1;
+            case "4-7":
+                return 2;
+            case "8-12":
+                return 3;
+            case "13-15":
+                return 4;
+            case "16-100":
+                return 5;
+        }
+        return null;
+    }
+
 }

@@ -1,18 +1,16 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AdultDTO;
-import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.SuggestedToy;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
-import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "adult")
+@RequestMapping(value = "adults")
 public class AdultController {
     private final AdultService adultService;
 
@@ -25,10 +23,13 @@ public class AdultController {
         return adultService.getAllAdults();
     }
 
-    //todo add checking if emailAddress is unique
     @PostMapping()
-    public void createAdult(@RequestBody AdultDTO adultDTO) {
-        adultService.saveAdult(adultDTO);
+    public ResponseEntity<?> createAdult(@RequestBody AdultDTO adultDTO) {
+        Adult adult = adultService.saveAdult(adultDTO);
+        if (adult != null)
+            return new ResponseEntity<>(adult, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping()
@@ -36,11 +37,10 @@ public class AdultController {
         adultService.deleteAdult(adultId);
     }
 
-    @GetMapping(value = "suggestion")
-    public List<SuggestedToy> getSuggestion() {
-        if (TokenInfo.getRole().equals("adult")) {
-            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " adult/suggestion:\n " + TokenInfo.getUserName());
-            return adultService.getSuggestion(TokenInfo.getUserName());
-        } else return null;
+    @PutMapping()
+    public void updateAdult(@RequestBody AdultDTO adultDTO) {
+        adultService.updateAdult(adultDTO);
     }
+
+
 }

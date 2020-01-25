@@ -19,9 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 @RestController
 @CrossOrigin
@@ -48,24 +45,18 @@ public class JwtAuthenticationController {
         String password = s[1];
         String role = s[2];
         if (email == null || password == null || role == null)
-            return null;//a niech się wali jak daje złe dane
-        //System.out.println("Authenticate\n" + email + "\t" + password + "\t" + role);
+            return null;
         authenticate(email, password);
-
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email, role);
-        // System.out.println("JwtAuthenticationController: "+userDetails.getUsername() + " " + userDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()) + " /login Token: " + token);
         TokenInfo.setRole(role);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new JwtResponse(token));
-
-
     }
 
-    //todo dojdzie więcej parametrów jak po stronie andorida sdię doda
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<String> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
+    public ResponseEntity<?> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
         String[] s = EncryptionTools.decrypt(message).split(";");
         String name = s[0];
         String surname = s[1];
@@ -73,12 +64,11 @@ public class JwtAuthenticationController {
         String phoneNumber = s[3];
         String email = s[4];
         if (name == null || password == null || surname == null || email == null) {
-            return null;//a niech się wali jak daje złe dane
+            return new ResponseEntity<>("bad data", HttpStatus.BAD_REQUEST);
         }
         UserDetails userDetailsA = adultService.loadUserByUsername(email);
         UserDetails userDetailsCh = childService.loadUserByUsername(email);
 
-        //  System.out.println("START REAGISTER");
         if (userDetailsA == null && userDetailsCh == null) {
             AdultDTO user = new AdultDTO();
             user.setAdult_name(name);
@@ -87,12 +77,9 @@ public class JwtAuthenticationController {
             user.setAdult_phone_number(phoneNumber);
             user.setAdult_email_address(email);
             adultService.saveAdult(user);
-            //        System.out.println("REGISTER: "+user.toString());
-            return ResponseEntity.ok("ok");
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         } else
-            return ResponseEntity.ok("user exist");
-
-
+            return new ResponseEntity<>("user exist", HttpStatus.CONFLICT);
     }
 
     private void authenticate(String username, String password) throws Exception {

@@ -69,7 +69,8 @@ public class ToyController {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + TokenInfo.getRole());
         if (TokenInfo.getRole().equals("child")) {
             if (filterDTO.isPseudoEmpty()) {
-                List<Toy> result = toyService.getToys();
+                FilterDTO f = new FilterDTO();
+                List<Toy> result = toyService.getFilterToys(f);
                 result = filterDistance(result, filterDTO.getRadius(), filterDTO.getLatitude(), filterDTO.getLongitude(), "child");
                 return result;
             } else {
@@ -160,11 +161,9 @@ public class ToyController {
     @DeleteMapping(value = "want/{id}")
     public ResponseEntity<Long> deleteSuggestToy(@PathVariable Long id) {
         boolean isRemoved = deleteSuggestion(id);
-
         if (!isRemoved) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 

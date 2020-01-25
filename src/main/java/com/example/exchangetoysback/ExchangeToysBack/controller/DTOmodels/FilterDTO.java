@@ -1,10 +1,10 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class FilterDTO {
     private String mainCategory;//null if any category
     private String age;//null if each age

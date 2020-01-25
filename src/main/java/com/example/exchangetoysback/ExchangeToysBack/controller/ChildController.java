@@ -33,6 +33,11 @@ public class ChildController {
         return childService.getMyChildren(TokenInfo.getUserName());
     }
 
+    @GetMapping(value = "my-data")//tylko dla dzieci do filtorwania
+    public Child getMyData() {
+        return childService.getOneChild(TokenInfo.getUserName());
+    }
+
     @PostMapping("update")
     public Child updateChild(@RequestBody ChildUpdateDTO childDTO) {
         Child ch = childService.getOneChild(childDTO.getChild_login());
