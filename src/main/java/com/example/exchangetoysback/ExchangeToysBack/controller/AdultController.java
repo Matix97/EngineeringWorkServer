@@ -1,8 +1,10 @@
 package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AdultDTO;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.SuggestedToy;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
+import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +44,11 @@ public class AdultController {
         adultService.updateAdult(adultDTO);
     }
 
+    @GetMapping(value = "suggestion")
+    public List<SuggestedToy> getSuggestion() {
+        if (TokenInfo.getRole().equals("adult")) {
+            return adultService.getSuggestion(TokenInfo.getUserName());
+        } else return null;
+    }
 
 }
