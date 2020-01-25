@@ -124,7 +124,7 @@ public class ToyController {
     }
 
     @PostMapping(value = "want")
-    public void suggestToy(@RequestBody Long toyId) {
+    public ResponseEntity<?> suggestToy(@RequestBody Long toyId) {
         if (TokenInfo.getRole().equals("child")) {
             System.out.println("want: " + TokenInfo.getUserName());
             Child child = childService.getOneChild(TokenInfo.getUserName());
@@ -132,6 +132,7 @@ public class ToyController {
 
             if (sug.length >= child.getAmountOfSuggesstedToy()) {
                 //nie możesz już dodać zabawki
+
             } else {
                 if (thisToyWasInYourFavorite(toyId, child)) {
                     adultService.suggestToy(toyId, TokenInfo.getUserName());
@@ -139,12 +140,15 @@ public class ToyController {
                     finalSug += toyId.toString();
                     finalSug += ";";
                     childService.updateSuggestion(child, finalSug);
+                    System.out.println("want: GOODDDDDDDD");
+                    return new ResponseEntity<>("good", HttpStatus.OK);
                 }
 
             }
 
         }
-
+        System.out.println("want: BADDDDD");
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     private boolean thisToyWasInYourFavorite(Long toyId, Child child) {
