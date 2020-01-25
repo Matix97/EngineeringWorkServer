@@ -129,7 +129,8 @@ public class ToyController {
             System.out.println("want: " + TokenInfo.getUserName());
             Child child = childService.getOneChild(TokenInfo.getUserName());
             String[] sug = child.getChild_suggestion().split(";");
-            if (sug.length >= 10) {
+
+            if (sug.length >= child.getAmountOfSuggesstedToy()) {
                 //nie możesz już dodać zabawki
             } else {
                 if (thisToyWasInYourFavorite(toyId, child)) {
