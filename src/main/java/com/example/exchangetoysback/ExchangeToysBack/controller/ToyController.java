@@ -60,7 +60,11 @@ public class ToyController {
 
     @DeleteMapping("{id}")
     public void deleteToy(@PathVariable Long id) {
-        toyService.deleteToy(id);
+        Toy toy = toyService.getById(id);
+        toy.setToy_owner_id("ToyExchangePlatfromDelereAdvert");
+        toy.setToy_owner_phone_number(null);
+        toyService.update(toy);
+        //toyService.deleteToy(id);
     }
 
     @PostMapping()
@@ -77,27 +81,45 @@ public class ToyController {
                 FilterDTO f = new FilterDTO();
                 List<Toy> result = toyService.getFilterToys(f);
                 result = filterDistance(result, filterDTO.getRadius(), filterDTO.getLatitude(), filterDTO.getLongitude(), "child");
+                result = filterName(result);
                 return result;
             } else {
                 List<Toy> result = toyService.getFilterToys(filterDTO);
                 result = filterDistance(result, filterDTO.getRadius(), filterDTO.getLatitude(), filterDTO.getLongitude(), "child");
+                result = filterName(result);
                 return result;
             }
         } else if (TokenInfo.getRole().equals("adult")) {
             if (filterDTO.getRadius() == null) {
-                if (filterDTO.isPseudoEmpty())
-                    return toyService.getToys();
-                else
-                    return toyService.getFilterToys(filterDTO);
+                if (filterDTO.isPseudoEmpty()) {
+                    List<Toy> result = toyService.getToys();
+                    result = filterName(result);
+                    return result;
+                } else {
+                    List<Toy> result = toyService.getFilterToys(filterDTO);
+                    result = filterName(result);
+                    return result;
+                }
+
             } else {
                 List<Toy> result = toyService.getFilterToys(filterDTO);
                 result = filterDistance(result, filterDTO.getRadius(), filterDTO.getLatitude(), filterDTO.getLongitude(), "adult");
+                result = filterName(result);
                 return result;
             }
 
         } else
             return null;
 
+    }
+
+    List<Toy> filterName(List<Toy> toyList) {
+        List<Toy> finalLis = new ArrayList<>();
+        toyList.forEach(toy -> {
+            if (!toy.getToy_owner_id().equals("ToyExchangePlatfromDelereAdvert"))
+                finalLis.add(toy);
+        });
+        return finalLis;
     }
 
     List<Toy> filterDistance(List<Toy> toyList, Integer distance, Double latitude, Double longitude, String role) {
