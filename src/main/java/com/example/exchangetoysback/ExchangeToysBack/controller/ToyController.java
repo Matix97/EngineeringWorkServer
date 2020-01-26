@@ -58,6 +58,11 @@ public class ToyController {
     }
 
 
+    @DeleteMapping("{id}")
+    public void deleteToy(@PathVariable Long id) {
+        toyService.deleteToy(id);
+    }
+
     @PostMapping()
     public void createToy(@RequestBody AddToyDTO toyDTO) {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/create:\n " + toyDTO.toString());

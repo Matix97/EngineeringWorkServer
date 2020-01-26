@@ -26,6 +26,10 @@ public class ToyService {
         this.childService = childService;
     }
 
+    public void deleteToy(Long toyID) {
+        toyRepository.deleteById(toyID);
+    }
+
     public Toy getById(Long id) {
         //System.out.println("toy service: "+id);
         return toyRepository.findByIdMY(id);
