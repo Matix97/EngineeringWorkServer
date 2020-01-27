@@ -7,7 +7,6 @@ import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
 import com.example.exchangetoysback.ExchangeToysBack.service.JwtUserDetailsService;
-import com.example.exchangetoysback.ExchangeToysBack.tools.EncryptionTools;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @RestController
@@ -38,9 +40,9 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService jwtUserDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
-
-        String[] s = EncryptionTools.decrypt(message).split(";");
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") String message) throws Exception {
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " AUTHENTICATE ");
+        String[] s = message.split(";");
         String email = s[0];
         String password = s[1];
         String role = s[2];
@@ -56,8 +58,8 @@ public class JwtAuthenticationController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestHeader(value = "Authorization") byte[] message) throws Exception {
-        String[] s = EncryptionTools.decrypt(message).split(";");
+    public ResponseEntity<?> saveUser(@RequestHeader(value = "Authorization") String message) throws Exception {
+        String[] s = message.split(";");
         String name = s[0];
         String surname = s[1];
         String password = s[2];

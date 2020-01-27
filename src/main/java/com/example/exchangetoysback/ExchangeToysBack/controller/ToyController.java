@@ -9,6 +9,7 @@ import com.example.exchangetoysback.ExchangeToysBack.service.RentalService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ToyService;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Adult;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Child;
+import com.example.exchangetoysback.ExchangeToysBack.service.model.Rental;
 import com.example.exchangetoysback.ExchangeToysBack.service.model.Toy;
 import com.example.exchangetoysback.ExchangeToysBack.tools.TokenInfo;
 import org.gavaghan.geodesy.Ellipsoid;
@@ -131,7 +132,7 @@ public class ToyController {
         Integer finalDistance = distance;
         List<Toy> finalLis = new ArrayList<>();
         toyList.forEach(toy -> {
-          //  System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > " + getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " " + latitude + " " + longitude + " " + toy.getToy_latitude() + " " + toy.getToy_longitude());
+            //  System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " toy/filter: " + finalDistance + " > " + getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()) + " " + latitude + " " + longitude + " " + toy.getToy_latitude() + " " + toy.getToy_longitude());
             //if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
             if (finalDistance > getDistance(latitude, longitude, toy.getToy_latitude(), toy.getToy_longitude()))
                 finalLis.add(toy);
@@ -232,71 +233,25 @@ public class ToyController {
     }
 
     @PostMapping(value = "rent")
-    public void rentToy(@RequestBody RentalDTO rentalDTO) {
+    public ResponseEntity<?> rentToy(@RequestBody RentalDTO rentalDTO) {
         if (TokenInfo.getRole().equals("adult")) {
-            System.out.println("On start: " + rentalDTO.toString());
-            switch (rentalDTO.getTypOfTransaction()) {
-                case "timeExchange": {
-                    // TODO: 03/01/2020 sprawdzanie czy osoby są właścicelami zabawek
-                    System.out.println("timeExChange");
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
 
-                    rentalService.creat(rentalDTO, rentalDTO.getSecondToyIdToTransaction());
-                    Toy toy2 = toyService.getById(rentalDTO.getSecondToyIdToTransaction());
-                    toy2.setToy_current_holder_id(TokenInfo.getUserName());
-                    toyService.update(toy2);
-                    break;
-                }
-                case "endlessExchange": {
-                    System.out.println("endlessExchange");
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
-
-                    rentalService.creat(rentalDTO, rentalDTO.getSecondToyIdToTransaction());
-                    Toy toy2 = toyService.getById(rentalDTO.getSecondToyIdToTransaction());
-                    toy2.setToy_owner_id(TokenInfo.getUserName());
-                    toyService.update(toy2);
-                    break;
-                }
-                case "moneyCommitment": {
-                    System.out.println("moneyCommitment");
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
-                    break;
-                }
-                case "freeCommitment": {
-                    System.out.println("freeCommitment");
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    toy.setToy_owner_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
-                    break;
-                }
-                case "moneyTimeRental": {
-                    System.out.println("moneyTimeRental");
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
-                    break;
-                }
-                case "freeTimeRental": {
-                    System.out.println("freeTimeRental");
-                    rentalService.creat(rentalDTO, rentalDTO.getToyIdToTransaction());
-                    Toy toy = toyService.getById(rentalDTO.getToyIdToTransaction());
-                    toy.setToy_current_holder_id(rentalDTO.getFutureHolder());
-                    toyService.update(toy);
-                    break;
-                }
+            boolean everythingIsOk = false;
+            System.out.println("freeTimeRental");
+            Rental rental = rentalService.creat(rentalDTO, rentalDTO.getToyIdTo());
+            if (rental != null) {
+                Toy toy = toyService.getById(rentalDTO.getToyIdTo());
+                toy.setToy_current_holder_id(rentalDTO.getFutureHolderEmail());
+                toyService.update(toy);
+                everythingIsOk = true;
             }
-        }
 
+
+            if (everythingIsOk)
+                return new ResponseEntity<>("good", HttpStatus.OK);
+            else
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } else
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }
