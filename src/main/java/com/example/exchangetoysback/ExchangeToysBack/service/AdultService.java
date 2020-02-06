@@ -39,6 +39,8 @@ public class AdultService implements UserDetailsService {
     }
 
     public Adult getOneAdult(String email) {
+
+        System.out.println("Service: adults/one: " + email);
         return adultRepository.findByEmail(email);
     }
 

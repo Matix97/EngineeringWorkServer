@@ -34,6 +34,14 @@ public class AdultController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("one")
+    public Adult getAdult() {
+        System.out.println("adults/one");
+        Adult adult = adultService.getOneAdult(TokenInfo.getUserName());
+        System.out.println("adults/one\n" + adult);
+        return adult;
+    }
+
     @DeleteMapping()
     public void deleteAdult(@RequestParam String adultId) {
         adultService.deleteAdult(adultId);
