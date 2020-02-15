@@ -3,6 +3,7 @@ package com.example.exchangetoysback.ExchangeToysBack.controller;
 
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.AdultDTO;
 import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.JwtResponse;
+import com.example.exchangetoysback.ExchangeToysBack.controller.DTOmodels.LoginDTO;
 import com.example.exchangetoysback.ExchangeToysBack.security.JwtTokenUtil;
 import com.example.exchangetoysback.ExchangeToysBack.service.AdultService;
 import com.example.exchangetoysback.ExchangeToysBack.service.ChildService;
@@ -40,9 +41,9 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService jwtUserDetailsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestHeader(value = "Authorization") String message) throws Exception {
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " AUTHENTICATE ");
-        String[] s = message.split(";");
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody LoginDTO message) throws Exception {
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " AUTHENTICATE "+message.getMessage());
+        String[] s = message.getMessage().split(";");
         String email = s[0];
         String password = s[1];
         String role = s[2];
